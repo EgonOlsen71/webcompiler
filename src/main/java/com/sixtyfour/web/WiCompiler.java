@@ -1,7 +1,12 @@
 package com.sixtyfour.web;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,13 +66,67 @@ public class WiCompiler extends HttpServlet {
 		ServletOutputStream os = response.getOutputStream();
 		try {
 			Parameters params = readParameters(request);
-			Logger.log(params.toString());
-
 			ServletConfig sc = getServletConfig();
 			String path = sc.getInitParameter("uploadpath");
-
 			String file = request.getParameter("file");
-			if (file==null || file.isBlank()) {
+			String poll = request.getParameter("poll");
+
+			if (poll != null && !poll.isBlank()) {
+				poll(os, path, file);
+				return;
+			} else {
+				new Thread() {
+					@Override
+					public void run() {
+						Logger.log("Starting delayed compilation...");
+						delayedCompilation(params, sc, path, file);
+					}
+				}.start();
+			}
+
+		} catch (Exception e) {
+			os.print("Error: " + e.getMessage());
+			Logger.log("Error!", e);
+		}
+		os.print("ok");
+		os.flush();
+	}
+
+	private void poll(ServletOutputStream os, String path, String file) throws IOException {
+		File ready = new File(path, file + ".rdy");
+		if (ready.isFile()) {
+			Logger.log("Compiled file for " + file + " is ready!");
+			try (InputStream is = new FileInputStream(ready)) {
+				String response = new String(Loader.loadBlob(is), "ISO-8859-1").replace("\n", "\r");
+				Logger.log("Link to file: ["+response+"]");
+				os.print(response);
+			} finally {
+				ready.delete();
+			}
+		} else {
+			Logger.log("Compilation for " + file + " in progress...");
+			os.print("no");
+		}
+
+	}
+
+	private void delayedCompilation(Parameters params, ServletConfig sc, String path, String file) {
+
+		File progress = new File(path, file + ".tmp");
+		progress.delete();
+
+		Logger.log(params.toString());
+		Logger.log("Created temp file: " + progress);
+
+		PrintWriter os;
+		try {
+			os = new PrintWriter(new FileOutputStream(progress));
+		} catch (FileNotFoundException e1) {
+			throw new RuntimeException(e1);
+		}
+
+		try {
+			if (file == null || file.isBlank()) {
 				os.print("Error: No file name!? ");
 				return;
 			}
@@ -92,12 +151,17 @@ public class WiCompiler extends HttpServlet {
 			} else {
 				os.print("Error compiling file!");
 			}
-
 		} catch (Exception e) {
+			Logger.log("Error while compiling", e);
 			os.print("Error: " + e.getMessage());
-			Logger.log("Error!", e);
+		} finally {
+			if (os != null) {
+				os.close();
+				File ready = new File(path, file + ".rdy");
+				progress.renameTo(ready);
+				Logger.log("Renamed temp file to " + ready);
+			}
 		}
-		os.flush();
 	}
 
 	private Parameters readParameters(HttpServletRequest request) {
@@ -190,7 +254,7 @@ public class WiCompiler extends HttpServlet {
 		}
 	}
 
-	private boolean compile(Parameters params, String path, String file, ServletOutputStream os, List<String> res)
+	private boolean compile(Parameters params, String path, String file, PrintWriter os, List<String> res)
 			throws IOException {
 
 		if (file.contains("..") || file.contains("\\") || file.contains("/")) {
@@ -300,7 +364,7 @@ public class WiCompiler extends HttpServlet {
 	}
 
 	private boolean writeTargetFiles(List<String> res, MemoryConfig memConfig, String targetFile, List<String> ncode,
-			Assembler assy, PlatformProvider platform, boolean addrHeader, boolean compress, ServletOutputStream os)
+			Assembler assy, PlatformProvider platform, boolean addrHeader, boolean compress, PrintWriter os)
 			throws IOException {
 		boolean ok = write6502(res, memConfig, targetFile, assy, platform, addrHeader, compress);
 		// Check out of memory on write time
