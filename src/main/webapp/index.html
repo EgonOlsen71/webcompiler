@@ -1,0 +1,150 @@
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="robots" content="noindex" />
+		<link href="style/default.css" rel="stylesheet" type="text/css" />
+		<script src="assets/jquery.min.js"></script>
+		<script src="assets/js.cookie-2.2.1.min.js"></script>
+		<script src="assets/js.js"></script>
+		<title>MOSpeed - Web edition</title>
+	</head>
+	<body style="background:#ffffff">
+		<h2>MOSpeed - Web edition</h2>
+		<div>
+			This is an experimental web version of <a href="https://www.c64-wiki.com/wiki/MOSpeed" target="_blank">MOSpeed</a>, an optimizing cross compiler for Commodore BASIC V2.<br/>
+			It can compile BASIC V2 source code into executables for the C64, the VIC20 and the Commander X16.<br/>
+			It takes either text or PRG files as input.<br/><br/>
+			For convenience, the configuration will be saved in a cookie on your computer at each compile.<br/>
+			Depending on how many files you compile in one go and on your configuration, you'll either get a PRG file<br/>
+			or a ZIP file after the compilation.<br/><br/>
+			Source code and compiled files will only be stored during the compilation and will be deleted once your download starts.<br/><br/>
+			<b>Please note:</b> This server runs on a Raspberry Pi 3. So please don't expect great performance out of it.<br/>
+			MOSpeed will most likely run much faster on your local PC.<br/><br/>
+			<b>Please don't bookmark this page, as the IP can change every now and then.<br/>Use <a href="https://jpct.de/mospeed" target="_blank">https://jpct.de/mospeed</a> instead.</b>
+			
+		</div>
+		<hr/>
+		<form id="myform" method="post" name="myform" target="compiletarget" action="/WebCompiler/Compile">
+			<div class="uploadform well well-lg">
+				<b class="uploadmsg">Drop file here...</b>
+			</div>
+			<div>
+			<span class="selection_group"><label>...or select one: </label><iframe class="uploadframe" src="upload.html"></iframe></span>
+			</div>
+			<div style="clear:both"></div>
+			<div id="uploaded">
+				<span class="selection_group"><label>Uploaded files:</label></span>
+				<ul id="uploadedfiles"></ul>
+				<span id="hiddennames"></span>
+			</div>
+			<hr/>
+			<div>
+				<input class="uploadbutton" type="button" value="Compile files" onclick="compile()"></input>
+			</div>
+			<hr/>
+			<h3>Compiler configuration</h3>
+			<input id="resetbutton" class="uploadbutton" type="button" value="Reset configuration" onclick="resetConfiguration()"></input>
+			
+			<!-- <input id="savebutton" class="uploadbutton" type="button" value="Save configuration" onclick="saveConfiguration()"></input> -->
+			<br/>
+			<span id="platformy" class="selection_group">
+				<label for="platformy">Target platform:</label>
+				<select id="platform" name="platform" class="short">
+					<option value="c64">C64</option>
+					<option value="vic20">VIC 20/VC 20</option>
+					<option value="x16">Commander X16 (r38)</option>
+				</select>
+			</span>
+			<span id="memselect" style="display:none" class="selection_group">
+				<br/><br/>
+				<label for="memselect">Memory configuration:</label>
+				<select id="memconfig" name="memconfig" class="short">
+					<option value="0">No expansion</option>
+					<option value="3">3K expansion</option>
+					<option value="8">8K+ expansion</option>
+				</select>
+			</span>
+			<span id="ram" class="selection_group">
+				<br/><br/>
+				<label for="ram">RAM usage:</label>
+				<input type="checkbox" id="bigram" name="bigram" value="1"/><label class=" checkboxlabel" for="bigram">Use hidden RAM (slower!)</label>
+			</span>
+			<br/><br/>
+			<span class="input_group selection">
+				<label>Program start:</label>
+				<input class="input-radio" type="radio" id="progstart1" checked="checked" name="progstartdefault" value="1"/><label class="radiolabel" for="progstart1">Default</label>
+				<input class="input-radio" type="radio" id="progstart2" name="progstartdefault" value="0"/><label class="radiolabel" for="progstart2">...other address</label>
+				<input class="input-field veryshort" placeholder="start address (decimal or hex)" id="progstart" type="text" name="progstart" style="display:none"/>
+			</span>
+			<span class="input_group selection">
+				<label>Variable start:</label>
+				<input class="input-radio" type="radio" id="varstart1" checked="checked" name="varstartdefault" value="1"/><label class="radiolabel" for="varstart1">Default</label>
+				<input class="input-radio" type="radio" id="varstart2" name="varstartdefault" value="0"/><label class="radiolabel" for="varstart2">...other address</label>
+				<input class="input-field veryshort" placeholder="start address (decimal or hex)" id="varstart" type="text" name="varstart" style="display:none"/>
+			</span>
+			<span class="input_group selection">
+				<label>String memory end:</label>
+				<input class="input-radio" type="radio" id="varend1" checked="checked" name="varenddefault" value="1"/><label class="radiolabel" for="varend1">Default</label>
+				<input class="input-radio" type="radio" id="varend2" name="varenddefault" value="0"/><label class="radiolabel" for="varend2">...other address</label>
+				<input class="input-field veryshort" placeholder="end address (decimal or hex)" id="varend" type="text" name="varend" style="display:none"/>
+			</span>
+			<span class="input_group selection">
+				<label>Runtime start:</label>
+				<input class="input-radio" type="radio" id="runtimestart1" checked="checked" name="runtimestartdefault" value="1"/><label class="radiolabel" for="runtimestart1">Default</label>
+				<input class="input-radio" type="radio" id="runtimestart2" name="runtimestartdefault" value="0"/><label class="radiolabel" for="runtimestart2">...other address</label>
+				<input class="input-field veryshort" placeholder="start address (decimal or hex)" id="runtimestart" type="text" name="runtimestart" style="display:none"/>
+			</span>
+			<br class="breaky"/>
+			<span id="compact" class="selection_group">
+				<label for="compact">Compact level:</label>
+				<select id="compactlevel" name="compactlevel" class="short">
+					<option value="0">Default (fastest)</option>
+					<option value="5">Medium (slower)</option>
+					<option value="4">High (even slower)</option>
+					<option value="3">Highest (slowest)</option>
+				</select>
+			</span>
+			<br class="breaky"/><br/>
+			<span id="sourcy" class="selection_group">
+				<label for="sourcy">Source code processing:</label>
+				<select id="source" name="source" class="short">
+					<option value="none">None</option>
+					<option value="tolower">Convert to lower case</option>
+					<option value="flipcase">Flip lower/higher case</option>
+				</select>
+			</span>
+			<br class="breaky"/><br/>
+			<span id="loopsy" class="selection_group">
+				<label for="loopsy">Loop handling:</label>
+				<select id="loops" name="loops" class="short">
+					<option value="0">Remove empty loops</option>
+					<option value="1">Retain empty loops</option>
+				</select>
+			</span>
+			<br class="breaky"/><br/>
+			<span id="export" class="selection_group">
+				<label for="export">Linker:</label>
+				<input type="checkbox" id="multipart" name="multipart" value="1"/><label class=" checkboxlabel" for="multipart">Split into multiple files</label>
+			</span>
+			<br class="breaky"/><br/>
+			<span id="memholes" class="selection_group">
+				<label for="memholestart">Memory holes / locked regions:</label>
+				<span class="template"><input class="input-field veryshort" placeholder="start address (decimal or hex)" type="text" name="memholestart"/> - <input class="input-field veryshort" placeholder="end address (decimal or hex)" type="text" name="memholeend"/><br/></span>
+				<br/>
+				<input id="addhole" class="uploadbutton" type="button" value="Add memory hole" onclick="addMemoryHole()"></input>
+			</span>
+			<br class="breaky"/>
+			<hr/>
+			<div>
+				<input class="uploadbutton" type="button" value="Compile files" onclick="compile()"></input>
+			</div>
+		</form>
+		<div id="output" style="display:none;">
+			<pre class="console" id="console">Compiling...</pre>
+			<hr/>
+			<div id="failed" style="display:none;"><h2>Compilation failed...please see console output for more details!</h2></div>
+			<input id="runagain" class="uploadbutton" type="button" style="display:none;" value="Compile more files" onclick="document.location=document.location"></input>
+		</div>
+		<iframe id="compiletarget" name="compiletarget" src="empty.html" style="display:none;"></iframe>
+	</body>
+</html>
