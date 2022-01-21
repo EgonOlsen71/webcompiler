@@ -67,6 +67,10 @@ public class WiCompiler extends HttpServlet {
 			String path = sc.getInitParameter("uploadpath");
 
 			String file = request.getParameter("file");
+			if (file==null || file.isBlank()) {
+				os.print("Error: No file name!? ");
+				return;
+			}
 			List<String> res = new ArrayList<>();
 			boolean ok = false;
 

@@ -44,6 +44,10 @@ public class ChunkedUploader extends HttpServlet {
 			String data = request.getParameter("data");
 			if (data != null && data.length() > 0) {
 				Logger.log("Uploading chunk: " + fileName);
+				if (fileName==null || fileName.isBlank()) {
+					response.getOutputStream().print("Error: No file name!? ");
+					return;
+				}
 				checkFile(fileName);
 
 				fileName = fileName.replace(" ", "-");
@@ -85,9 +89,4 @@ public class ChunkedUploader extends HttpServlet {
 			throws ServletException, IOException {
 		doPost(request, response);
 	}
-
-	private void returnError() throws IOException {
-		throw new IOException("Upload failed!");
-	}
-
 }

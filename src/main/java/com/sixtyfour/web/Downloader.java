@@ -60,7 +60,6 @@ public class Downloader extends HttpServlet {
 		try (FileInputStream fis = new FileInputStream(bin)) {
 			String part = request.getParameter("part");
 			if (part != null) {
-				response.setBufferSize(0);
 				response.setContentType("text/plain");
 				// Transfer part..."part"
 				String size = request.getParameter("size");
