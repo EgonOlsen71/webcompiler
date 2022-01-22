@@ -5,4 +5,5 @@ del moscloud.d64
 call ..\res\c1541 ..\build\moscloud.d64 -write ++moscloud-c.prg moscloud,p
 call ..\res\c1541 ..\build\moscloud.d64 -write ..\res\test.prg test,p
 call ..\res\c1541 ..\build\moscloud.d64 -write ..\res\error.prg errortest,p
+call ..\res\c1541 ..\build\moscloud.d64 -write ..\res\frog.prg frogtest,p
 cd ..\build

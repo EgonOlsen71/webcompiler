@@ -53,6 +53,13 @@ public class ChunkedUploader extends HttpServlet {
 				fileName = fileName.replace(" ", "-");
 				Path target = Paths.get(path + fileName);
 				Logger.log("Appending data to: " + target);
+				
+				if (target.toFile().length()>63335) {
+					Logger.log("File too large, aborting...");
+					target.toFile().delete();
+					response.getOutputStream().print("Error: File too large");
+					return;
+				}
 
 				try (BufferedOutputStream fos = new BufferedOutputStream(new FileOutputStream(target.toFile(), true))) {
 					//StringBuilder sb=new StringBuilder();
@@ -69,11 +76,11 @@ public class ChunkedUploader extends HttpServlet {
 				response.getOutputStream().print("ok");
 			} else {
 				Logger.log("Nothing to upload for: " + fileName);
-				response.getOutputStream().print("error: empty file");
+				response.getOutputStream().print("Error: Empty file");
 			}
 		} catch (Exception e) {
 			Logger.log("Chunked upload failed!", e);
-			response.getOutputStream().print("error: "+e.getMessage());
+			response.getOutputStream().print("Error: "+e.getMessage());
 		}
 	}
 
