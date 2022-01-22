@@ -66,6 +66,7 @@ public class WiCompiler extends HttpServlet {
 		ServletOutputStream os = response.getOutputStream();
 		try {
 			Parameters params = readParameters(request);
+			Logger.log(params.toString());
 			ServletConfig sc = getServletConfig();
 			String path = sc.getInitParameter("uploadpath");
 			String file = request.getParameter("file");
@@ -167,34 +168,28 @@ public class WiCompiler extends HttpServlet {
 	private Parameters readParameters(HttpServletRequest request) {
 		Parameters params = new Parameters();
 
-		params.setPlatform(request.getParameter("platform"));
-		params.setMemConfig(request.getParameter("memconfig"));
-
-		params.setProgStart(getMemoryAddress("progstart", request));
+		// Not transmitted ATM
 		params.setVarStart(getMemoryAddress("varstart", request));
 		params.setVarEnd(getMemoryAddress("varend", request));
 		params.setRuntimeStart(getMemoryAddress("runtimestart", request));
-
 		params.setBigRam(getBoolean("bigram", request));
 		params.setRetainLoops(getBoolean("loops", request));
-
 		params.setSourceProcessing(request.getParameter("source"));
+		
+		// Potentially transmitted
+		params.setProgStart(getMemoryAddress("sa", request));
+		params.setCompactLevel(getNumber(request.getParameter("cl")));
 
-		params.setCompactLevel(getNumber(request.getParameter("compactlevel")));
-
-		String[] starts = request.getParameterValues("memholestart");
-		String[] ends = request.getParameterValues("memholeend");
-
-		if (starts != null && ends != null) {
-			if (starts.length == ends.length) {
-				for (int i = 0; i < starts.length; i++) {
-					params.addMemoryHole(new MemoryHole(getNumber(starts[i]), getNumber(ends[i])));
-				}
-			} else {
+		String memHole = request.getParameter("mh");
+		if (memHole!=null && !memHole.isBlank()) {
+			String[] parts=memHole.split("-");
+			if (parts.length!=2) {
 				params.setMemoryHolesValid(false);
+			} else {
+				params.addMemoryHole(new MemoryHole(getNumber(parts[0]), getNumber(parts[1])));
 			}
+			
 		}
-
 		return params;
 	}
 
@@ -207,8 +202,7 @@ public class WiCompiler extends HttpServlet {
 	}
 
 	private int getMemoryAddress(String parameter, HttpServletRequest request) {
-		String parName = parameter + "default";
-		if (request.getParameter(parName) == null || request.getParameter(parName).equals("1")) {
+		if (request.getParameter(parameter) == null || request.getParameter(parameter).equals("0")) {
 			return -1;
 		} else {
 			int num = getNumber(request.getParameter(parameter));

@@ -63,6 +63,11 @@
 40505 print "Starting remote compiler...";
 40510 tl=0:dc%=0:ur$=gu$+"WiCompile"
 40520 ur$=ur$+"?file="+tf$
+40522 if sa>0 then n=sa:gosub 40900:ur$=ur$+"&sa="+ns$
+40523 if hs<=0 then 40526
+40524 n=hs:gosub 40900:hs$=ns$:n=he:gosub 40900
+40525 ur$=ur$+"&mh="+hs$+"-"+ns$
+40526 if cl%>0 then n=cl%:gosub 40900:ur$=ur$+"&cl="+ns$
 40530 gosub 46500:gosub 41500
 40550 gosub 42000:print "ok"
 40560 print "Waiting for result...";
@@ -77,6 +82,11 @@
 40810 ti$="000000":ot=ti+90:poke 2023,23
 40820 if ti<ot then 40820
 40830 poke 2023,32:return
+
+40900 rem number to string
+40910 ns$=str$(n)
+40920 if n<0 then return
+40930 ns$=right$(ns$, len(ns$)-1):return
 
 41000 rem upload file part
 41010 gosub 45500
@@ -260,34 +270,70 @@
 
 57500 rem options screen
 57510 print chr$(147);"MOSCloud - Options":print
-57520 print "F1 - Refresh remote server:":print"     ";right$(gu$,len(gu$)-7)
-57530 print:print "F7 - Exit options menu"
+57520 print "F1 - Start address:";:if sa<=0 then print " Default":goto 57530
+57525 print sa
+57530 print "F3 - Memory hole at:";:if hs<=0 then print " None":goto 57540
+57535 print hs;" -";he
+57540 print "F5 - Compact level:";:if cl%<=0 then print " Default":goto 57580
+57545 print cl%
+57580 print "F8 - Refresh remote server:":print"     ";right$(gu$,len(gu$)-7)
+57590 print:print "F7 - Exit options menu"
 57700 get a$:if a$="" then 57700
-57710 a%=asc(a$):if a%=133 then gu$="":gosub 45800:goto 57510
-57720 if a%=136 then return
-57730 goto 57700
+57710 a%=asc(a$):if a%=140 then gu$="":gosub 45800:goto 57510
+57720 if a%=133 then gosub 60100:goto 57510
+57730 if a%=134 then gosub 60200:goto 57510
+57740 if a%=135 then gosub 60300:goto 57510
+57790 if a%=136 then return
+57800 goto 57700
 
 58000 rem print directory
 58010 print chr$(147);
-58020 open 1,dn%,0,"$":get#1,a$,a$
-58030 get#1,a$,a$,h$,l$:if st then close 1:goto 58070
+58020 open 1,dn%,0,"$":poke 781,1:sys 65478:get a$,a$
+58030 get a$,a$,h$,l$:if st then sys 65484:close 1:goto 58070
 58040 print asc(h$+ll$)+256*asc(l$+ll$);
-58050 for s=0 to 1:get#1,a$,b$: if b$ then print a$b$;:s=abs(st):next
+58050 for s=0 to 1:get a$,b$: if b$ then print a$b$;:s=abs(st):next
 58060 print a$:goto 58030
 58070 gosub 13000
 58080 return
 
 60000 rem end program
 60010 poke 45,0:poke 46,10:poke 47,0:poke 48,10:poke 49,0:poke 50,10
-60020 poke 55,0:poke 56,160:poke 51,0:poke 52,160:end
+60020 poke 55,0:poke 56,160:poke 51,0:poke 52,160:print chr$(9);:end
+
+60100 rem enter start address
+60105 print chr$(147);"Enter a new start address!":print
+60110 input "Start address (in decimal)";sa
+60115 if sa=0 then sa=-1:return
+60120 if sa<2049 or sa>53247 then print"Invalid start address!":goto 60110
+60130 return
+
+60200 rem enter memory hole
+60205 print chr$(147);"Enter addresses of the memory hole!"
+60208 print "This memory section remains unused.":print
+60210 input "Start of hole (in decimal)";hs
+60215 if hs=0 then hs=-1:he=-1:return
+60220 if hs<2049 or hs>53247 then print"Invalid start address!":goto 60210
+60230 input "End of hole (in decimal)";he
+60240 if he<2049 or he>53247 then print"Invalid end address!":goto 60230
+60250 if hs>he then ht=he:he=hs:hs=ht
+60260 return
+
+60300 rem enter compact level
+60305 print chr$(147);"Enter compact level!"
+60306 print "Lower is more compact but slower.":print
+60310 input "Compact level (3-6)";cl%
+60315 if cl%=0 then cl=-1:return
+60320 if cl%<3 or cl%>6 then print "Invalid level!":goto 60310
+60330 return
 
 62000 rem init
 62010 ll$=chr$(0):i=rnd(0)
 62020 tt%=64:bu=49976:ui=49152
 62030 ur=49155:us=49152+18:ug=49152+21
-62040 uc=49152+24
+62040 uc=49152+24:sa=-1:hs=-1:he=-1:cl%=-1
 62050 ml%=2048:dim dt$(10)
-62060 gu$="": rem gu$="http://192.168.178.20:8080/WebCompiler/"
+62060 gu$=""
+62065 rem gu$="http://192.168.178.20:8080/WebCompiler/"
 62070 of$="test"
 62080 dim hx$(15)
 62090 for i=0 to 15:read hx$(i):next
