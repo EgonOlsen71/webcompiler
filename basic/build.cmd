@@ -1,1 +1,0 @@
-mospeed -sysbuffer=53000 moscloud.bas

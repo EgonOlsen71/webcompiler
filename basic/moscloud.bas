@@ -1,9 +1,9 @@
 0 rem moscloud - egonolsen71/2022
-5 gosub 1000:gosub 56500:gosub 62000
-10 gosub 45800:gosub 57000:gosub 10000
+5 gosub 1000:gosub 56500:gosub 62000:gosub 45800
+10 gosub 57000:gosub 10000:if ff%=0 then 10
 20 gosub 40500
 30 gosub 44000:gosub 52000
-60 end
+60 goto 60000
 
 1000 rem setup screen
 1010 print chr$(147);chr$(14);chr$(8);
@@ -11,8 +11,8 @@
 1030 return
 
 10000 rem read and transfer file
-10010 gosub 40100:da$="":dc%=0
-10020 gosub 51000:tc=0:cn%=0:ck%=0:if er%<>0 then gosub 40015:goto 10020
+10010 gosub 40100:da$="":dc%=0:ff%=1
+10020 gosub 51000:tc=0:cn%=0:ck%=0:if er%<>0 then gosub 13000:ff%=0:return
 10030 poke 2023,4:gosub 50000
 10040 if do%=0 then if er%=0 then gosub 11000:goto 10030
 10050 if er%<>0 then 56000
@@ -37,6 +37,11 @@
 12030 gosub 41000:gosub 42000:print mg$
 12040 cn%=0:da$="":dc%=0:return
 
+13000 rem press any key
+13010 print:print"Press any key!"
+13020 get a$:if a$="" then 13020
+13030 return
+
 39000 rem low/highbyte. Value in tb, result in lb% and hb%
 39010 lb%=tb and 255:hb%=int(tb/256):return
 
@@ -54,7 +59,7 @@
 40180 return
 
 40500 rem compile program
-40502 if tc<2 then print:print "Error: File not found!":end
+40502 if tc<2 then print:print "Error: File not found!":goto 60000
 40505 print "Starting remote compiler...";
 40510 tl=0:dc%=0:ur$=gu$+"WiCompile"
 40520 ur$=ur$+"?file="+tf$
@@ -98,7 +103,7 @@
 42100 return
 
 43000 rem fatal error
-43010 gosub 51500:print:print:print mg$:end
+43010 gosub 51500:print "error":print:print mg$:goto 60000
 
 44000 rem download compiled program
 44010 print "Downloading file...";:gosub 48000
@@ -125,11 +130,9 @@
 45500 rem create send url (almost...)
 45505 tl=0:for i=0 to dc%-1:tl=tl+len(dt$(i)):next
 45510 tb=tl:gosub 39000
-45520 dl$=chr$(lb%):dh$=chr$(hb%)
 45525 ur$=gu$+"ChunkedUpload"
-45530 ur$=ur$+"?file="+tf$
-45550 ur$=ur$+"&data="
-45560 ur$=ur$+"<$"+dl$+dh$
+45530 ur$=ur$+"?file="+tf$+"&data="
+45560 ur$=ur$+"<$"+chr$(lb%)+chr$(hb%)
 45580 return
 
 45700 rem create cloud url
@@ -137,10 +140,10 @@
 
 45800 rem get actual ip
 45810 if len(gu$)<>0 then 45850
-45820 print chr$(147);"Obtaining remote address...":gosub 45700
+45820 print chr$(147);"Getting remote address...":gosub 45700
 45830 gosub 46500:gosub 41500:gosub 42000
 45840 gu$=mg$
-45850 print "Address: ";gu$:return
+45850 print:print "Address: ";gu$:return
 
 46000 rem check load error
 46010 le%=(peek(169)=2) and (peek(bu+200)=33) and (peek(bu+201)=48)
@@ -148,15 +151,17 @@
 46030 return
 
 46500 rem store url in memory
-46510 poke 2023,16:dm%=0:lm=len(ur$):for t=1 to lm
-46520 dd%=asc(mid$(ur$,t,1)):if dc%>0 and t>=lm-4 then 46560 
+46510 poke 2023,16:lm=len(ur$):ls=lm-4:for t=1 to lm
+46520 b3=bu+3:dd%=asc(mid$(ur$,t,1)):if dc%>0 then if t>=ls then 46560 
 46540 gosub 47300
-46560 poke bu+3+t,dd%
+46560 poke b3+t,dd%
 46570 next:gosub 47000
 46575 if dc%=0 then poke 2023,32:return
 46580 t=bu+2+t:for i=0 to dc%-1:da$=dt$(i)
 46590 for p=1 to len(da$):dd%=asc(mid$(da$,p,1))
-46600 poke t+p,dd%:next:t=t+p-1:next:poke 2023,32:return
+46600 poke t+p,dd%:next
+46610 t=t+p-1:next
+46620 poke 2023,32:return
 
 47000 rem store length in memory
 47010 d=len(ur$)+4+tl:s=bu+1:gosub 47100
@@ -220,11 +225,11 @@
 56030 poke 2023,32:print:print "Communication error!":print
 56040 print "Either there's no wic64 present"
 56050 print "or the connection has timed out!"
-56060 end
+56060 goto 60000
 
 56200 rem load error
 56230 gosub 51500:poke 2023,32:print:print "load error (";lv%;")!"
-56260 end
+56260 goto 60000
 
 56500 rem check for api presence...
 56505 dn%=peek(186)
@@ -234,24 +239,33 @@
 
 57000 rem display main menu
 57010 print chr$(147);:poke 2023,32
-57012 print "MOSCloud - a remote BASIC compiler":print
+57012 print "MOSCloud - a remote BASIC compiler"
+57015 print "by EgonOlsen71 / 2022":print
 57020 print "F1 - Select source: ";of$
 57025 print "F2 - Select drive:";dn%
 57030 print "F3 - Show directory"
-57040 print "F5 - Refresh remote server:":print"     ";right$(gu$,len(gu$)-7)
+57040 print "F5 - Options"
 57050 print "F8 - Quit":print
 57055 print "F7 - Compile!"
 57060 get a$:if a$="" then 57060
 57070 a%=asc(a$):if a%=133 then gosub 40000:goto 57010
 57080 if a%=134 then gosub 58000:goto 57010
-57090 if a%=135 then gu$="":gosub 45800:goto 57010
+57090 if a%=135 then gosub 57500:goto 57010
 57100 if a%=136 then print chr$(147);:return
-57110 if a%=140 then print chr$(147);:end
+57110 if a%=140 then print chr$(147);:print"Have a nice BASIC!":goto 60000
 57120 if a%=137 then 57200
 57130 goto 57060
 57200 dn%=dn%+1:if dn%=10 then dn%=8
 57210 goto 57010
 
+57500 rem options screen
+57510 print chr$(147);"MOSCloud - Options":print
+57520 print "F1 - Refresh remote server:":print"     ";right$(gu$,len(gu$)-7)
+57530 print:print "F7 - Exit options menu"
+57700 get a$:if a$="" then 57700
+57710 a%=asc(a$):if a%=133 then gu$="":gosub 45800:goto 57510
+57720 if a%=136 then return
+57730 goto 57700
 
 58000 rem print directory
 58010 print chr$(147);
@@ -260,8 +274,12 @@
 58040 print asc(h$+ll$)+256*asc(l$+ll$);
 58050 for s=0 to 1:get#1,a$,b$: if b$ then print a$b$;:s=abs(st):next
 58060 print a$:goto 58030
-58070 get a$:if a$="" then 58070
+58070 gosub 13000
 58080 return
+
+60000 rem end program
+60010 poke 45,0:poke 46,10:poke 47,0:poke 48,10:poke 49,0:poke 50,10
+60020 poke 55,0:poke 56,160:poke 51,0:poke 52,160:end
 
 62000 rem init
 62010 ll$=chr$(0):i=rnd(0)
@@ -269,7 +287,7 @@
 62030 ur=49155:us=49152+18:ug=49152+21
 62040 uc=49152+24
 62050 ml%=2048:dim dt$(10)
-62060 gu$="http://192.168.178.20:8080/WebCompiler/"
+62060 gu$="": rem gu$="http://192.168.178.20:8080/WebCompiler/"
 62070 of$="test"
 62080 dim hx$(15)
 62090 for i=0 to 15:read hx$(i):next
