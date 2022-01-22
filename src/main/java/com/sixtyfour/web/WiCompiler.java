@@ -179,6 +179,12 @@ public class WiCompiler extends HttpServlet {
 		// Potentially transmitted
 		params.setProgStart(getMemoryAddress("sa", request));
 		params.setCompactLevel(getNumber(request.getParameter("cl")));
+		
+		// Hack, if somebody tries to compile the program up to 49152 or something...
+		if (params.getProgStart()>40960) {
+			Logger.log("Adjusting string memory end to 53248!");
+			params.setVarEnd(53248);
+		}
 
 		String memHole = request.getParameter("mh");
 		if (memHole!=null && !memHole.isBlank()) {
