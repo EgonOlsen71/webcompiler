@@ -291,7 +291,7 @@
 58020 open 1,dn%,0,"$":poke 781,1:sys 65478:get a$,a$
 58030 get a$,a$,h$,l$:if st then sys 65484:close 1:goto 58070
 58040 print asc(h$+ll$)+256*asc(l$+ll$);
-58050 for s=0 to 1:get a$,b$: if b$ then print a$b$;:s=abs(st):next
+58050 get a$,b$:if b$ then print a$b$;:if not(st) then 58050
 58060 print a$:goto 58030
 58070 gosub 13000
 58080 return
