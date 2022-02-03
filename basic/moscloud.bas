@@ -27,7 +27,7 @@
 
 11000 rem store byte and maybe transfer
 11010 da$=da$+by$:cn%=cn%+1:tc=tc+1
-11020 if len(da$)>250 then gosub 10500
+11020 if len(da$)>64 then gosub 10500
 11030 if cn%=ml% then gosub 10500:gosub 12000
 11040 return
 
@@ -188,8 +188,8 @@
 
 48000 rem open target file
 48010 nf$="++"+left$(of$,14)
-48015 open 15,8,15,"s:"+nf$:close 15
-48020 open 2,8,2,nf$+",prg,w"
+48015 open 15,dn%,15,"s:"+nf$:close 15
+48020 open 2,dn%,2,nf$+",prg,w"
 48030 return
 
 48500 rem close target file
@@ -331,7 +331,7 @@
 62020 tt%=64:bu=49976:ui=49152
 62030 ur=49155:us=49152+18:ug=49152+21
 62040 uc=49152+24:sa=-1:hs=-1:he=-1:cl%=-1
-62050 ml%=2048:dim dt$(10)
+62050 ml%=2048:dim dt$(40)
 62060 gu$=""
 62065 rem gu$="http://192.168.178.20:8080/WebCompiler/"
 62070 of$="test"

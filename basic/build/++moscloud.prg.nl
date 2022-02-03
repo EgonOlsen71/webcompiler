@@ -581,7 +581,7 @@ LDY VAR_DA$+1
 STA B_REG
 STY B_REG+1
 JSR LEN
-LDA #$fa
+LDA #$40
 LDY #$00
 STA TMP_ZP
 STY TMP_ZP+1
@@ -4182,10 +4182,12 @@ LDA #<CONST_62R
 LDY #>CONST_62R
 JSR REALFACPUSH
 ; Optimizer rule: Load and PUSH combined/1
-LDA #<CONST_3R
-LDY #>CONST_3R
-JSR REALFACPUSH
-; Optimizer rule: Load and PUSH combined/1
+LDY VAR_DN%
+LDA VAR_DN%+1
+; integer in Y/A to FAC
+JSR INTFAC
+; Optimizer rule: FAC into REG?, REG? into FAC/0
+JSR PUSHREAL
 LDA #<CONST_62R
 LDY #>CONST_62R
 JSR REALFACPUSH
@@ -4238,10 +4240,12 @@ LDA #<CONST_19R
 LDY #>CONST_19R
 JSR REALFACPUSH
 ; Optimizer rule: Load and PUSH combined/1
-LDA #<CONST_3R
-LDY #>CONST_3R
-JSR REALFACPUSH
-; Optimizer rule: Load and PUSH combined/1
+LDY VAR_DN%
+LDA VAR_DN%+1
+; integer in Y/A to FAC
+JSR INTFAC
+; Optimizer rule: FAC into REG?, REG? into FAC/0
+JSR PUSHREAL
 LDA #<CONST_19R
 LDY #>CONST_19R
 JSR REALFACPUSH
@@ -4345,7 +4349,7 @@ BPL dcloop1848_1
 ; Optimizer rule: Direct copy of floats into mem/6
 LDX #4
 dceloop3050_1:
-LDA CONST_65R,X
+LDA CONST_8R,X
 CMP VAR_SO,X
 BNE LINE_SKIP110
 DEX
@@ -4447,16 +4451,16 @@ LINE_51000:
 ;
 LINE_51005:
 ;
-LDA #<CONST_66
-LDY #>CONST_66
+LDA #<CONST_65
+LDY #>CONST_65
 JSR STROUTWL
 ; Optimizer rule: Memory saving STROUT/1
 LDA VAR_OF$
 LDY VAR_OF$+1
 JSR STROUTWL
 ; Optimizer rule: Memory saving STROUT/1
-LDA #<CONST_67
-LDY #>CONST_67
+LDA #<CONST_66
+LDY #>CONST_66
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
@@ -4718,8 +4722,8 @@ LINE_52000:
 LINE_52010:
 ;
 JSR LINEBREAK
-LDA #<CONST_68
-LDY #>CONST_68
+LDA #<CONST_67
+LDY #>CONST_67
 JSR STROUTWL
 ; Optimizer rule: Memory saving STROUT/1
 LDA VAR_NF$
@@ -4730,8 +4734,8 @@ JSR STROUTBRKWL
 ;
 LINE_52020:
 ;
-LDA #<CONST_69
-LDY #>CONST_69
+LDA #<CONST_68
+LDY #>CONST_68
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
@@ -4739,8 +4743,8 @@ JSR LINEBREAK
 ;
 LINE_52030:
 ;
-LDA #<CONST_70
-LDY #>CONST_70
+LDA #<CONST_69
+LDY #>CONST_69
 JSR STROUTWL
 ; Optimizer rule: Memory saving STROUT/1
 LDA #34
@@ -4755,8 +4759,8 @@ LDA #34
 JSR SINGLECHROUTMAX
 ; Optimizer rule: Memory saving single char out(1)/2
 ; Optimizer rule: Single character output/2
-LDA #<CONST_72
-LDY #>CONST_72
+LDA #<CONST_71
+LDY #>CONST_71
 JSR STROUTWL
 ; Optimizer rule: Memory saving STROUT/1
 LDY VAR_DN%
@@ -4767,8 +4771,8 @@ JSR FACXREG
 ; Optimizer rule: FAC 2 X_REG(2)/1
 JSR INTOUT
 JSR CRSRRIGHT
-LDA #<CONST_73
-LDY #>CONST_73
+LDA #<CONST_72
+LDY #>CONST_72
 JSR STROUTWL
 ; Optimizer rule: Memory saving STROUT/1
 ;
@@ -4794,8 +4798,8 @@ LDA #147
 JSR SINGLECHROUTMAX
 ; Optimizer rule: Memory saving single char out(1)/2
 ; Optimizer rule: Single character output/2
-LDA #<CONST_75
-LDY #>CONST_75
+LDA #<CONST_74
+LDY #>CONST_74
 JSR STROUTWL
 ; Optimizer rule: Memory saving STROUT/1
 ;
@@ -4904,8 +4908,8 @@ LDY #32
 STY 2023
 ; Optimizer rule: Simple POKE/2
 JSR LINEBREAK
-LDA #<CONST_77
-LDY #>CONST_77
+LDA #<CONST_76
+LDY #>CONST_76
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
@@ -4913,16 +4917,16 @@ JSR LINEBREAK
 ;
 LINE_56040:
 ;
-LDA #<CONST_78
-LDY #>CONST_78
+LDA #<CONST_77
+LDY #>CONST_77
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
 ;
 LINE_56050:
 ;
-LDA #<CONST_79
-LDY #>CONST_79
+LDA #<CONST_78
+LDY #>CONST_78
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
@@ -4942,8 +4946,8 @@ LDY #32
 STY 2023
 ; Optimizer rule: Simple POKE/2
 JSR LINEBREAK
-LDA #<CONST_80
-LDY #>CONST_80
+LDA #<CONST_79
+LDY #>CONST_79
 JSR STROUTWL
 ; Optimizer rule: Memory saving STROUT/1
 LDY VAR_LV%
@@ -4954,8 +4958,8 @@ JSR FACXREG
 ; Optimizer rule: FAC 2 X_REG(2)/1
 JSR INTOUT
 JSR CRSRRIGHT
-LDA #<CONST_81
-LDY #>CONST_81
+LDA #<CONST_80
+LDY #>CONST_80
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
@@ -5111,13 +5115,13 @@ LDA #147
 JSR SINGLECHROUTMAX
 ; Optimizer rule: Memory saving single char out(1)/2
 ; Optimizer rule: Single character output/2
-LDA #<CONST_85
-LDY #>CONST_85
+LDA #<CONST_84
+LDY #>CONST_84
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
-LDA #<CONST_86
-LDY #>CONST_86
+LDA #<CONST_85
+LDY #>CONST_85
 STA B_REG
 STY B_REG+1
 LDA B_REG
@@ -5167,16 +5171,16 @@ STY 2023
 ;
 LINE_57012:
 ;
-LDA #<CONST_87
-LDY #>CONST_87
+LDA #<CONST_86
+LDY #>CONST_86
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
 ;
 LINE_57015:
 ;
-LDA #<CONST_88
-LDY #>CONST_88
+LDA #<CONST_87
+LDY #>CONST_87
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
@@ -5184,8 +5188,8 @@ JSR LINEBREAK
 ;
 LINE_57020:
 ;
-LDA #<CONST_89
-LDY #>CONST_89
+LDA #<CONST_88
+LDY #>CONST_88
 JSR STROUTWL
 ; Optimizer rule: Memory saving STROUT/1
 LDA VAR_OF$
@@ -5196,8 +5200,8 @@ JSR STROUTBRKWL
 ;
 LINE_57025:
 ;
-LDA #<CONST_90
-LDY #>CONST_90
+LDA #<CONST_89
+LDY #>CONST_89
 JSR STROUTWL
 ; Optimizer rule: Memory saving STROUT/1
 LDY VAR_DN%
@@ -5212,24 +5216,24 @@ JSR LINEBREAK
 ;
 LINE_57030:
 ;
-LDA #<CONST_91
-LDY #>CONST_91
+LDA #<CONST_90
+LDY #>CONST_90
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
 ;
 LINE_57040:
 ;
-LDA #<CONST_92
-LDY #>CONST_92
+LDA #<CONST_91
+LDY #>CONST_91
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
 ;
 LINE_57050:
 ;
-LDA #<CONST_93
-LDY #>CONST_93
+LDA #<CONST_92
+LDY #>CONST_92
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
@@ -5237,8 +5241,8 @@ JSR LINEBREAK
 ;
 LINE_57055:
 ;
-LDA #<CONST_94
-LDY #>CONST_94
+LDA #<CONST_93
+LDY #>CONST_93
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
@@ -5455,8 +5459,8 @@ LDA #147
 JSR SINGLECHROUTMAX
 ; Optimizer rule: Memory saving single char out(1)/2
 ; Optimizer rule: Single character output/2
-LDA #<CONST_100
-LDY #>CONST_100
+LDA #<CONST_99
+LDY #>CONST_99
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
@@ -5556,8 +5560,8 @@ LDA #147
 JSR SINGLECHROUTMAX
 ; Optimizer rule: Memory saving single char out(1)/2
 ; Optimizer rule: Single character output/2
-LDA #<CONST_102
-LDY #>CONST_102
+LDA #<CONST_101
+LDY #>CONST_101
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
@@ -5565,8 +5569,8 @@ JSR LINEBREAK
 ;
 LINE_57520:
 ;
-LDA #<CONST_103
-LDY #>CONST_103
+LDA #<CONST_102
+LDY #>CONST_102
 JSR STROUTWL
 ; Optimizer rule: Memory saving STROUT/1
 LDA #$0
@@ -5594,8 +5598,8 @@ BEQ LINE_SKIP124
 ;
 LINE_NSKIP124:
 ;
-LDA #<CONST_104
-LDY #>CONST_104
+LDA #<CONST_103
+LDY #>CONST_103
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
@@ -5618,8 +5622,8 @@ JSR LINEBREAK
 ;
 LINE_57530:
 ;
-LDA #<CONST_105
-LDY #>CONST_105
+LDA #<CONST_104
+LDY #>CONST_104
 JSR STROUTWL
 ; Optimizer rule: Memory saving STROUT/1
 LDA #$0
@@ -5647,8 +5651,8 @@ BEQ LINE_SKIP125
 ;
 LINE_NSKIP125:
 ;
-LDA #<CONST_106
-LDY #>CONST_106
+LDA #<CONST_105
+LDY #>CONST_105
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
@@ -5667,8 +5671,8 @@ JSR COPY2_XYA_XREG
 ; Optimizer rule: Quick copy into REG/7
 JSR REALOUT
 JSR CRSRRIGHT
-LDA #<CONST_107
-LDY #>CONST_107
+LDA #<CONST_106
+LDY #>CONST_106
 JSR STROUTWL
 ; Optimizer rule: Memory saving STROUT/1
 LDA #<VAR_HE
@@ -5683,8 +5687,8 @@ JSR LINEBREAK
 ;
 LINE_57540:
 ;
-LDA #<CONST_108
-LDY #>CONST_108
+LDA #<CONST_107
+LDY #>CONST_107
 JSR STROUTWL
 ; Optimizer rule: Memory saving STROUT/1
 LDA #$00
@@ -5718,8 +5722,8 @@ BEQ LINE_SKIP126
 ;
 LINE_NSKIP126:
 ;
-LDA #<CONST_104
-LDY #>CONST_104
+LDA #<CONST_103
+LDY #>CONST_103
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
@@ -5742,18 +5746,18 @@ JSR LINEBREAK
 ;
 LINE_57580:
 ;
-LDA #<CONST_109
-LDY #>CONST_109
+LDA #<CONST_108
+LDY #>CONST_108
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
-LDA #<CONST_110
-LDY #>CONST_110
+LDA #<CONST_109
+LDY #>CONST_109
 JSR STROUTWL
 ; Optimizer rule: Memory saving STROUT/1
 JSR COMPACTMAX
-LDA #<CONST_111R
-LDY #>CONST_111R
+LDA #<CONST_110R
+LDY #>CONST_110R
 JSR REALFACPUSH
 ; Optimizer rule: Load and PUSH combined/1
 ; ignored: CHGCTX #1
@@ -5785,8 +5789,8 @@ JSR STROUTBRK
 LINE_57590:
 ;
 JSR LINEBREAK
-LDA #<CONST_112
-LDY #>CONST_112
+LDA #<CONST_111
+LDY #>CONST_111
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
@@ -6040,8 +6044,8 @@ LDA #<CONST_0R
 LDY #>CONST_0R
 JSR REALFACPUSH
 ; Optimizer rule: Load and PUSH combined/1
-LDA #<CONST_113
-LDY #>CONST_113
+LDA #<CONST_112
+LDY #>CONST_112
 STA B_REG
 STY B_REG+1
 LDY B_REG
@@ -6370,8 +6374,8 @@ LDA #147
 JSR SINGLECHROUTMAX
 ; Optimizer rule: Memory saving single char out(1)/2
 ; Optimizer rule: Single character output/2
-LDA #<CONST_116
-LDY #>CONST_116
+LDA #<CONST_115
+LDY #>CONST_115
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
@@ -6382,8 +6386,8 @@ LINE_60110:
 INPUT6:
 JSR CLEARQUEUE
 JSR COMPACTMAX
-LDA #<CONST_117
-LDY #>CONST_117
+LDA #<CONST_116
+LDY #>CONST_116
 JSR STROUTWL
 ; Optimizer rule: Memory saving STROUT/1
 JSR QMARKOUT1
@@ -6392,8 +6396,8 @@ LDA X_REG
 COMP_SKP72:
 BEQ INPUT6_0
 ; Optimizer rule: CMP (REG) = 0(2)/3
-LDA #<CONST_118
-LDY #>CONST_118
+LDA #<CONST_117
+LDY #>CONST_117
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
@@ -6428,7 +6432,7 @@ LINE_NSKIP136:
 ;
 LDX #4
 dcloop2610_1:
-LDA CONST_119,X
+LDA CONST_118,X
 STA VAR_SA,X
 DEX
 BPL dcloop2610_1
@@ -6440,8 +6444,8 @@ LINE_SKIP136:
 ;
 LINE_60120:
 ;
-LDA #<CONST_120
-LDY #>CONST_120
+LDA #<CONST_119
+LDY #>CONST_119
 JSR REALFAC
 LDA #<VAR_SA
 LDY #>VAR_SA
@@ -6459,8 +6463,8 @@ GT_SKIP61:
 ; Real in (A/Y) to FAC
 JSR REALFACPUSH
 ; Optimizer rule: Load and PUSH combined/1
-LDA #<CONST_121R
-LDY #>CONST_121R
+LDA #<CONST_120R
+LDY #>CONST_120R
 JSR REALFAC
 LDA #<VAR_SA
 LDY #>VAR_SA
@@ -6495,8 +6499,8 @@ BEQ LINE_SKIP137
 ;
 LINE_NSKIP137:
 ;
-LDA #<CONST_122
-LDY #>CONST_122
+LDA #<CONST_121
+LDY #>CONST_121
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
@@ -6518,16 +6522,16 @@ LDA #147
 JSR SINGLECHROUTMAX
 ; Optimizer rule: Memory saving single char out(1)/2
 ; Optimizer rule: Single character output/2
-LDA #<CONST_123
-LDY #>CONST_123
+LDA #<CONST_122
+LDY #>CONST_122
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
 ;
 LINE_60208:
 ;
-LDA #<CONST_124
-LDY #>CONST_124
+LDA #<CONST_123
+LDY #>CONST_123
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
@@ -6538,8 +6542,8 @@ LINE_60210:
 INPUT7:
 JSR CLEARQUEUE
 JSR COMPACTMAX
-LDA #<CONST_125
-LDY #>CONST_125
+LDA #<CONST_124
+LDY #>CONST_124
 JSR STROUTWL
 ; Optimizer rule: Memory saving STROUT/1
 JSR QMARKOUT1
@@ -6548,8 +6552,8 @@ LDA X_REG
 COMP_SKP76:
 BEQ INPUT7_0
 ; Optimizer rule: CMP (REG) = 0(2)/3
-LDA #<CONST_118
-LDY #>CONST_118
+LDA #<CONST_117
+LDY #>CONST_117
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
@@ -6583,9 +6587,9 @@ COMP_SKP78:
 LINE_NSKIP138:
 LDX #4
 dcloop2737_1:
-LDA CONST_119,X
+LDA CONST_118,X
 STA VAR_HS,X
-LDA CONST_119,X
+LDA CONST_118,X
 STA VAR_HE,X
 DEX
 BPL dcloop2737_1
@@ -6598,8 +6602,8 @@ LINE_SKIP138:
 ;
 LINE_60220:
 ;
-LDA #<CONST_120
-LDY #>CONST_120
+LDA #<CONST_119
+LDY #>CONST_119
 JSR REALFAC
 LDA #<VAR_HS
 LDY #>VAR_HS
@@ -6617,8 +6621,8 @@ GT_SKIP64:
 ; Real in (A/Y) to FAC
 JSR REALFACPUSH
 ; Optimizer rule: Load and PUSH combined/1
-LDA #<CONST_121R
-LDY #>CONST_121R
+LDA #<CONST_120R
+LDY #>CONST_120R
 JSR REALFAC
 LDA #<VAR_HS
 LDY #>VAR_HS
@@ -6653,8 +6657,8 @@ BEQ LINE_SKIP139
 ;
 LINE_NSKIP139:
 ;
-LDA #<CONST_122
-LDY #>CONST_122
+LDA #<CONST_121
+LDY #>CONST_121
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
@@ -6668,8 +6672,8 @@ LINE_60230:
 INPUT8:
 JSR CLEARQUEUE
 JSR COMPACTMAX
-LDA #<CONST_126
-LDY #>CONST_126
+LDA #<CONST_125
+LDY #>CONST_125
 JSR STROUTWL
 ; Optimizer rule: Memory saving STROUT/1
 JSR QMARKOUT1
@@ -6678,8 +6682,8 @@ LDA X_REG
 COMP_SKP80:
 BEQ INPUT8_0
 ; Optimizer rule: CMP (REG) = 0(2)/3
-LDA #<CONST_118
-LDY #>CONST_118
+LDA #<CONST_117
+LDY #>CONST_117
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
@@ -6701,8 +6705,8 @@ INPUTCHECK8:
 ;
 LINE_60240:
 ;
-LDA #<CONST_120
-LDY #>CONST_120
+LDA #<CONST_119
+LDY #>CONST_119
 JSR REALFAC
 LDA #<VAR_HE
 LDY #>VAR_HE
@@ -6720,8 +6724,8 @@ GT_SKIP66:
 ; Real in (A/Y) to FAC
 JSR REALFACPUSH
 ; Optimizer rule: Load and PUSH combined/1
-LDA #<CONST_121R
-LDY #>CONST_121R
+LDA #<CONST_120R
+LDY #>CONST_120R
 JSR REALFAC
 LDA #<VAR_HE
 LDY #>VAR_HE
@@ -6756,8 +6760,8 @@ BEQ LINE_SKIP140
 ;
 LINE_NSKIP140:
 ;
-LDA #<CONST_127
-LDY #>CONST_127
+LDA #<CONST_126
+LDY #>CONST_126
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
@@ -6817,16 +6821,16 @@ LDA #147
 JSR SINGLECHROUTMAX
 ; Optimizer rule: Memory saving single char out(1)/2
 ; Optimizer rule: Single character output/2
-LDA #<CONST_128
-LDY #>CONST_128
+LDA #<CONST_127
+LDY #>CONST_127
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
 ;
 LINE_60306:
 ;
-LDA #<CONST_129
-LDY #>CONST_129
+LDA #<CONST_128
+LDY #>CONST_128
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
@@ -6837,8 +6841,8 @@ LINE_60310:
 INPUT9:
 JSR CLEARQUEUE
 JSR COMPACTMAX
-LDA #<CONST_130
-LDY #>CONST_130
+LDA #<CONST_129
+LDY #>CONST_129
 JSR STROUTWL
 ; Optimizer rule: Memory saving STROUT/1
 JSR QMARKOUT1
@@ -6847,8 +6851,8 @@ LDA X_REG
 COMP_SKP84:
 BEQ INPUT9_0
 ; Optimizer rule: CMP (REG) = 0(2)/3
-LDA #<CONST_118
-LDY #>CONST_118
+LDA #<CONST_117
+LDY #>CONST_117
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
@@ -6979,8 +6983,8 @@ BEQ LINE_SKIP143
 ;
 LINE_NSKIP143:
 ;
-LDA #<CONST_131
-LDY #>CONST_131
+LDA #<CONST_130
+LDY #>CONST_130
 JSR STROUTBRKWL
 ; Optimizer rule: Memory saving STROUTBRK/1
 ; Optimizer rule: STROUT + LINEBRK/1
@@ -7037,9 +7041,9 @@ STY VAR_TT%
 STA VAR_TT%+1
 LDX #4
 dcloop2864_4:
-LDA CONST_132,X
+LDA CONST_131,X
 STA VAR_BU,X
-LDA CONST_133,X
+LDA CONST_132,X
 STA VAR_UI,X
 DEX
 BPL dcloop2864_4
@@ -7049,11 +7053,11 @@ BPL dcloop2864_4
 LINE_62030:
 LDX #4
 dcloop2991_1:
-LDA CONST_134,X
+LDA CONST_133,X
 STA VAR_UR,X
-LDA CONST_135,X
+LDA CONST_134,X
 STA VAR_US,X
-LDA CONST_136,X
+LDA CONST_135,X
 STA VAR_UG,X
 DEX
 BPL dcloop2991_1
@@ -7063,20 +7067,20 @@ BPL dcloop2991_1
 LINE_62040:
 LDX #4
 dcloop2991_4:
-LDA CONST_137,X
+LDA CONST_136,X
 STA VAR_UC,X
-LDA CONST_119,X
+LDA CONST_118,X
 STA VAR_SA,X
-LDA CONST_119,X
+LDA CONST_118,X
 STA VAR_HS,X
-LDA CONST_119,X
+LDA CONST_118,X
 STA VAR_HE,X
 DEX
 BPL dcloop2991_4
 ; Special rule: Aggregation of assignments (4)
 ; Optimizer rule: Direct copy of floats into mem/6
-LDA #<CONST_119
-LDY #>CONST_119
+LDA #<CONST_118
+LDY #>CONST_118
 JSR REALFAC
 ; Optimizer rule: Direct loading of values into FAC/3
 ; FAC to integer in Y/A
@@ -7108,8 +7112,8 @@ LINE_62065:
 ;
 LINE_62070:
 ;
-LDA #<CONST_139
-LDY #>CONST_139
+LDA #<CONST_138
+LDY #>CONST_138
 STA TMP_ZP
 STY TMP_ZP+1
 LDA #<VAR_OF$
@@ -10659,7 +10663,7 @@ CONST_0R	.REAL 0.0
 CONST_2R	.REAL 14.0
 ; CONST: #8
 
-CONST_3R	.REAL 8.0
+
 ; CONST: #6
 
 
@@ -10672,9 +10676,9 @@ CONST_6	.BYTE 0
 ; CONST: #4
 
 CONST_7R	.REAL 4.0
-; CONST: #250
+; CONST: #64
 
-
+CONST_8R	.REAL 64.0
 ; CONST: $Processing chunk
 CONST_9	.BYTE 16
 .STRG "Processing chunk"
@@ -10843,56 +10847,53 @@ CONST_63	.BYTE 2
 ; CONST: $,prg,w
 CONST_64	.BYTE 6
 .STRG ",prg,w"
-; CONST: #64
-
-CONST_65R	.REAL 64.0
 ; CONST: $Loading '
-CONST_66	.BYTE 9
+CONST_65	.BYTE 9
 .STRG "Loading '"
 ; CONST: $'...
-CONST_67	.BYTE 4
+CONST_66	.BYTE 4
 .STRG "'..."
 ; CONST: $Compiled file:
-CONST_68	.BYTE 15
+CONST_67	.BYTE 15
 .STRG "Compiled file: "
 ; CONST: $Press RETURN to load it now!
-CONST_69	.BYTE 28
+CONST_68	.BYTE 28
 .STRG "Press RETURN to load it now!"
 ; CONST: $load
-CONST_70	.BYTE 4
+CONST_69	.BYTE 4
 .STRG "load"
 ; CONST: #34
 
 
 ; CONST: $,
-CONST_72	.BYTE 1
+CONST_71	.BYTE 1
 .STRG ","
 ; CONST: $,1
-CONST_73	.BYTE 2
+CONST_72	.BYTE 2
 .STRG ",1"
 ; CONST: #145
 
 
 ; CONST: $Initializing wic64...
-CONST_75	.BYTE 21
+CONST_74	.BYTE 21
 .STRG "Initializing wic64..."
 ; CONST: #87
 
 
 ; CONST: $Communication error!
-CONST_77	.BYTE 20
+CONST_76	.BYTE 20
 .STRG "Communication error!"
 ; CONST: $Either there's no wic64 present
-CONST_78	.BYTE 31
+CONST_77	.BYTE 31
 .STRG "Either there's no wic64 present"
 ; CONST: $or the connection has timed out!
-CONST_79	.BYTE 32
+CONST_78	.BYTE 32
 .STRG "or the connection has timed out!"
 ; CONST: $load error (
-CONST_80	.BYTE 12
+CONST_79	.BYTE 12
 .STRG "load error ("
 ; CONST: $)!
-CONST_81	.BYTE 2
+CONST_80	.BYTE 2
 .STRG ")!"
 ; CONST: #192
 
@@ -10904,34 +10905,34 @@ CONST_81	.BYTE 2
 
 
 ; CONST: $Loading...
-CONST_85	.BYTE 10
+CONST_84	.BYTE 10
 .STRG "Loading..."
 ; CONST: $universal
-CONST_86	.BYTE 9
+CONST_85	.BYTE 9
 .STRG "universal"
 ; CONST: $MOSCloud - a remote BASIC compiler
-CONST_87	.BYTE 34
+CONST_86	.BYTE 34
 .STRG "MOSCloud - a remote BASIC compiler"
 ; CONST: $by EgonOlsen71 / 2022
-CONST_88	.BYTE 21
+CONST_87	.BYTE 21
 .STRG "by EgonOlsen71 / 2022"
 ; CONST: $F1 - Select source:
-CONST_89	.BYTE 20
+CONST_88	.BYTE 20
 .STRG "F1 - Select source: "
 ; CONST: $F2 - Select drive:
-CONST_90	.BYTE 18
+CONST_89	.BYTE 18
 .STRG "F2 - Select drive:"
 ; CONST: $F3 - Show directory
-CONST_91	.BYTE 19
+CONST_90	.BYTE 19
 .STRG "F3 - Show directory"
 ; CONST: $F5 - Options
-CONST_92	.BYTE 12
+CONST_91	.BYTE 12
 .STRG "F5 - Options"
 ; CONST: $F8 - Quit
-CONST_93	.BYTE 9
+CONST_92	.BYTE 9
 .STRG "F8 - Quit"
 ; CONST: $F7 - Compile!
-CONST_94	.BYTE 13
+CONST_93	.BYTE 13
 .STRG "F7 - Compile!"
 ; CONST: #133
 
@@ -10949,46 +10950,46 @@ CONST_94	.BYTE 13
 
 
 ; CONST: $Have a nice BASIC!
-CONST_100	.BYTE 18
+CONST_99	.BYTE 18
 .STRG "Have a nice BASIC!"
 ; CONST: #137
 
 
 ; CONST: $MOSCloud - Options
-CONST_102	.BYTE 18
+CONST_101	.BYTE 18
 .STRG "MOSCloud - Options"
 ; CONST: $F1 - Start address:
-CONST_103	.BYTE 19
+CONST_102	.BYTE 19
 .STRG "F1 - Start address:"
 ; CONST: $ Default
-CONST_104	.BYTE 8
+CONST_103	.BYTE 8
 .STRG " Default"
 ; CONST: $F3 - Memory hole at:
-CONST_105	.BYTE 20
+CONST_104	.BYTE 20
 .STRG "F3 - Memory hole at:"
 ; CONST: $ None
-CONST_106	.BYTE 5
+CONST_105	.BYTE 5
 .STRG " None"
 ; CONST: $ -
-CONST_107	.BYTE 2
+CONST_106	.BYTE 2
 .STRG " -"
 ; CONST: $F5 - Compact level:
-CONST_108	.BYTE 19
+CONST_107	.BYTE 19
 .STRG "F5 - Compact level:"
 ; CONST: $F8 - Refresh remote server:
-CONST_109	.BYTE 27
+CONST_108	.BYTE 27
 .STRG "F8 - Refresh remote server:"
 ; CONST: $
-CONST_110	.BYTE 5
+CONST_109	.BYTE 5
 .STRG "     "
 ; CONST: #7
 
-CONST_111R	.REAL 7.0
+CONST_110R	.REAL 7.0
 ; CONST: $F7 - Exit options menu
-CONST_112	.BYTE 22
+CONST_111	.BYTE 22
 .STRG "F7 - Exit options menu"
 ; CONST: $$
-CONST_113	.BYTE 1
+CONST_112	.BYTE 1
 .STRG "$"
 ; CONST: #160
 
@@ -10997,76 +10998,76 @@ CONST_113	.BYTE 1
 
 
 ; CONST: $Enter a new start address!
-CONST_116	.BYTE 26
+CONST_115	.BYTE 26
 .STRG "Enter a new start address!"
 ; CONST: $Start address (in decimal)
-CONST_117	.BYTE 26
+CONST_116	.BYTE 26
 .STRG "Start address (in decimal)"
 ; CONST: $?redo from start
-CONST_118	.BYTE 16
+CONST_117	.BYTE 16
 .STRG "?redo from start"
 ; CONST: #-1.0
 
-CONST_119	.REAL -1.0
+CONST_118	.REAL -1.0
 ; CONST: #53247
 
-CONST_120	.REAL 53247
+CONST_119	.REAL 53247
 ; CONST: #2049
 
-CONST_121R	.REAL 2049.0
+CONST_120R	.REAL 2049.0
 ; CONST: $Invalid start address!
-CONST_122	.BYTE 22
+CONST_121	.BYTE 22
 .STRG "Invalid start address!"
 ; CONST: $Enter addresses of the memory hole!
-CONST_123	.BYTE 35
+CONST_122	.BYTE 35
 .STRG "Enter addresses of the memory hole!"
 ; CONST: $This memory section remains unused.
-CONST_124	.BYTE 35
+CONST_123	.BYTE 35
 .STRG "This memory section remains unused."
 ; CONST: $Start of hole (in decimal)
-CONST_125	.BYTE 26
+CONST_124	.BYTE 26
 .STRG "Start of hole (in decimal)"
 ; CONST: $End of hole (in decimal)
-CONST_126	.BYTE 24
+CONST_125	.BYTE 24
 .STRG "End of hole (in decimal)"
 ; CONST: $Invalid end address!
-CONST_127	.BYTE 20
+CONST_126	.BYTE 20
 .STRG "Invalid end address!"
 ; CONST: $Enter compact level!
-CONST_128	.BYTE 20
+CONST_127	.BYTE 20
 .STRG "Enter compact level!"
 ; CONST: $Lower is more compact but slower.
-CONST_129	.BYTE 33
+CONST_128	.BYTE 33
 .STRG "Lower is more compact but slower."
 ; CONST: $Compact level (3-6)
-CONST_130	.BYTE 19
+CONST_129	.BYTE 19
 .STRG "Compact level (3-6)"
 ; CONST: $Invalid level!
-CONST_131	.BYTE 14
+CONST_130	.BYTE 14
 .STRG "Invalid level!"
 ; CONST: #49976
 
-CONST_132	.REAL 49976
+CONST_131	.REAL 49976
 ; CONST: #49152
 
-CONST_133	.REAL 49152
+CONST_132	.REAL 49152
 ; CONST: #49155
 
-CONST_134	.REAL 49155
+CONST_133	.REAL 49155
 ; CONST: #49170.0
 
-CONST_135	.REAL 49170.0
+CONST_134	.REAL 49170.0
 ; CONST: #49173.0
 
-CONST_136	.REAL 49173.0
+CONST_135	.REAL 49173.0
 ; CONST: #49176.0
 
-CONST_137	.REAL 49176.0
+CONST_136	.REAL 49176.0
 ; CONST: #2048
 
 
 ; CONST: $test
-CONST_139	.BYTE 4
+CONST_138	.BYTE 4
 .STRG "test"
 ;###############################
 ; ******** DATA ********
@@ -11207,12 +11208,12 @@ VAR_P	.REAL 0.0
 VAR_D	.REAL 0.0
 ; VAR: S
 VAR_S	.REAL 0.0
+; VAR: DN%
+VAR_DN%	.WORD 0
 ; VAR: ST
 VAR_ST	.REAL 0.0
 ; VAR: SO
 VAR_SO	.REAL 0.0
-; VAR: DN%
-VAR_DN%	.WORD 0
 ; VAR: EC
 VAR_EC	.REAL 0.0
 ; VAR: UC
@@ -11268,8 +11269,11 @@ STRINGVARS_END
 STRINGARRAYS_START
 ; VAR: DT$[]
 .BYTE 2
-.WORD 22
+.WORD 82
 VAR_DT$[]
+.WORD EMPTYSTR EMPTYSTR EMPTYSTR EMPTYSTR EMPTYSTR EMPTYSTR EMPTYSTR EMPTYSTR EMPTYSTR EMPTYSTR
+.WORD EMPTYSTR EMPTYSTR EMPTYSTR EMPTYSTR EMPTYSTR EMPTYSTR EMPTYSTR EMPTYSTR EMPTYSTR EMPTYSTR
+.WORD EMPTYSTR EMPTYSTR EMPTYSTR EMPTYSTR EMPTYSTR EMPTYSTR EMPTYSTR EMPTYSTR EMPTYSTR EMPTYSTR
 .WORD EMPTYSTR EMPTYSTR EMPTYSTR EMPTYSTR EMPTYSTR EMPTYSTR EMPTYSTR EMPTYSTR EMPTYSTR EMPTYSTR
 .WORD EMPTYSTR
 ; VAR: HX$[]
