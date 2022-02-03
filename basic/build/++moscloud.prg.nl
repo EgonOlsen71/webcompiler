@@ -3562,18 +3562,19 @@ BNE LINE_SKIP105
 LINE_NSKIP105:
 ; Optimizer rule: Simplified equal comparison/6
 ;
-LDA #<CONST_35R
-LDY #>CONST_35R
-JSR COPY2_XYA_YREG
-; Optimizer rule: MEM 2 Y_REG/3
-; Optimizer rule: Memory saving copy/4
-; Optimizer rule: Quick copy into REG/7
-JSR YREGFAC
-; Optimizer rule: Y_REG 2 FAC(1)/1
-; Optimizer rule: FAC into REG?, REG? into FAC/0
-; FAC to integer in Y/A
-JSR FACWORD
+LDY #32
 STY 2023
+; Optimized code for POKE CONST,CONST
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
 JMP RETURN
 ;
 LINE_SKIP105:
