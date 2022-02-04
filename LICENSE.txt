@@ -24,5 +24,5 @@ OTHER DEALINGS IN THE SOFTWARE.
 For more information, please refer to <http://unlicense.org>
 
 
-This doesn't apply to the c1541.exe in the build-directory. That one is
+This doesn't apply to the c1541.exe in the basic/res-directory. That one is
 part of the VICE-distribution and the corresponding license applies to it.
