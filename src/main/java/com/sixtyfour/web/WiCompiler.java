@@ -41,6 +41,9 @@ import com.sixtyfour.system.Program;
 import com.sixtyfour.system.ProgramPart;
 
 /**
+ * Servlet to compile a file for MOSCloud. Once a compile has been triggered,
+ * the servlet returns before it's done. MOSCloud then polls for completion
+ * using this very same servlet with the poll-parameter.
  * 
  * @author EgonOlsen
  */
@@ -99,7 +102,7 @@ public class WiCompiler extends HttpServlet {
 			Logger.log("Compiled file for " + file + " is ready!");
 			try (InputStream is = new FileInputStream(ready)) {
 				String response = new String(Loader.loadBlob(is), "ISO-8859-1").replace("\n", "\r");
-				Logger.log("Link to file: ["+response+"]");
+				Logger.log("Link to file: [" + response + "]");
 				os.print(response);
 			} finally {
 				ready.delete();
@@ -175,26 +178,26 @@ public class WiCompiler extends HttpServlet {
 		params.setBigRam(getBoolean("bigram", request));
 		params.setRetainLoops(getBoolean("loops", request));
 		params.setSourceProcessing(request.getParameter("source"));
-		
+
 		// Potentially transmitted
 		params.setProgStart(getMemoryAddress("sa", request));
 		params.setCompactLevel(getNumber(request.getParameter("cl")));
-		
+
 		// Hack, if somebody tries to compile the program up to 49152 or something...
-		if (params.getProgStart()>40960) {
+		if (params.getProgStart() > 40960) {
 			Logger.log("Adjusting string memory end to 53248!");
 			params.setVarEnd(53248);
 		}
 
 		String memHole = request.getParameter("mh");
-		if (memHole!=null && !memHole.isBlank()) {
-			String[] parts=memHole.split("-");
-			if (parts.length!=2) {
+		if (memHole != null && !memHole.isBlank()) {
+			String[] parts = memHole.split("-");
+			if (parts.length != 2) {
 				params.setMemoryHolesValid(false);
 			} else {
 				params.addMemoryHole(new MemoryHole(getNumber(parts[0]), getNumber(parts[1])));
 			}
-			
+
 		}
 		return params;
 	}

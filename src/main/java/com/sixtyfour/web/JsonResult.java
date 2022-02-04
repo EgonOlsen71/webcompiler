@@ -1,6 +1,7 @@
 package com.sixtyfour.web;
 
 /**
+ * Container class for results.
  * 
  * @author EgonOlsen
  *

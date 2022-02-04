@@ -56,6 +56,8 @@ You might not, but I did. The project contains a /php-directory which contains t
 
 If you want to access the web compiler in this setup, you don't do so directly but by using https://<your php server>/<path to scripts> instead. The index.php will redirect you to the actual server.
 
+The PHP script are hard coded to expect the actual serve to run on port 8192. If that's not the case with your server, change this in the scripts.
+
 If you just want to run the server on your local machine and don't want to make it available to the internet, just ignore the PHP scripts and set refresh.enabled in your server's wiconf.ini to false.
 
 # MOSCloud and my own server

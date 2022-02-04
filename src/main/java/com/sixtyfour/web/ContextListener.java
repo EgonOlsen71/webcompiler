@@ -10,6 +10,9 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 /**
+ * Reads the config (once! If you want to modify it, you have to restart the
+ * server) and starts a thread to transmit this servers IP to another one if
+ * desired.
  * 
  * @author EgonOlsen
  *

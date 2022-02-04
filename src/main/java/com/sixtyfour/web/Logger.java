@@ -3,6 +3,7 @@ package com.sixtyfour.web;
 import java.util.Date;
 
 /**
+ * Very simple logging class. Exhance this if needed!
  * 
  * @author EgonOlsen
  *

@@ -6,6 +6,7 @@ import java.util.List;
 import com.sixtyfour.cbmnative.mos6502.util.MemoryHole;
 
 /**
+ * Parameters for the compilation.
  * 
  * @author EgonOlsen
  *

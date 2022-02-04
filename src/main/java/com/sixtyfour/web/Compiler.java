@@ -50,6 +50,7 @@ import com.sixtyfour.system.Program;
 import com.sixtyfour.system.ProgramPart;
 
 /**
+ * Servlet called by the web application to compile one or several BASIC programs. 
  * 
  * @author EgonOlsen
  */

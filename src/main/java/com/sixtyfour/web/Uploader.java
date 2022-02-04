@@ -23,6 +23,7 @@ import javax.servlet.http.Part;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
+ * Uploadservlet for the web application to upload a file.
  * 
  * @author EgonOlsen
  */
@@ -32,9 +33,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class Uploader extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	
-	private final static String[] ALLOWED_EXTENSIONS = { ".prg", ".bas", ".txt", ".asc", ".pet", ".cbm" };
 
+	private final static String[] ALLOWED_EXTENSIONS = { ".prg", ".bas", ".txt", ".asc", ".pet", ".cbm" };
 
 	public Uploader() {
 		// TODO Auto-generated constructor stub
@@ -60,17 +60,17 @@ public class Uploader extends HttpServlet {
 			checkFile(fileName);
 
 			fileName = fileName.replace(" ", "-");
-			fileName = (int)(Math.random()*10000)+""+System.currentTimeMillis() + "_" + fileName;
+			fileName = (int) (Math.random() * 10000) + "" + System.currentTimeMillis() + "_" + fileName;
 			Path target = Paths.get(path + fileName);
 			Logger.log("Copying file to: " + target);
 
 			Files.copy(is, target, StandardCopyOption.REPLACE_EXISTING);
-			
-			if (target.toFile().length()==0 || target.toFile().length()>65536) {
+
+			if (target.toFile().length() == 0 || target.toFile().length() > 65536) {
 				Logger.log("Upload failed, file size mismatch: " + fileName);
 				returnError(os);
 			}
-			
+
 			Logger.log("Upload ok: " + fileName);
 			returnOk(fileName, os);
 		} catch (Exception e) {
@@ -101,7 +101,7 @@ public class Uploader extends HttpServlet {
 			Logger.log("Invalid file name: " + fileName);
 			throw new IOException("Invalid file name: " + fileName);
 		}
-		
+
 		String file = fileName.toLowerCase(Locale.ENGLISH);
 		boolean ok = false;
 		for (String ext : ALLOWED_EXTENSIONS) {

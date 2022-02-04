@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * Servlet to download a compiled file. This can either be the complete file or,
+ * if size and part are given, just a chunk of it.
  * 
  * @author EgonOlsen
  */
@@ -48,7 +50,7 @@ public class Downloader extends HttpServlet {
 			return;
 		}
 
-		Logger.log("Downloading "+file);
+		Logger.log("Downloading " + file);
 		ServletConfig sc = getServletConfig();
 		String path = sc.getInitParameter("uploadpath");
 
@@ -75,14 +77,15 @@ public class Downloader extends HttpServlet {
 					os.write(0);
 				}
 				int total = 1;
-				while ((len = fis.read(buffer, 0, sizei)) > -1 && total<sizei) {
+				while ((len = fis.read(buffer, 0, sizei)) > -1 && total < sizei) {
 					os.write(buffer, 0, len);
-					total+=len;
+					total += len;
 				}
-				Logger.log("Bytes send: "+total);
+				Logger.log("Bytes send: " + total);
 			} else {
 				response.setContentType("application/octet-stream");
-				response.setHeader("Content-disposition", "attachment; filename=" + file.substring(file.indexOf("/") + 1));
+				response.setHeader("Content-disposition",
+						"attachment; filename=" + file.substring(file.indexOf("/") + 1));
 				// Transfer whole file...
 				while ((len = fis.read(buffer)) > -1) {
 					os.write(buffer, 0, len);
@@ -95,7 +98,7 @@ public class Downloader extends HttpServlet {
 				delete(bin);
 			}
 		}
-		//os.flush();
+		// os.flush();
 		Logger.log("Download finished!");
 	}
 

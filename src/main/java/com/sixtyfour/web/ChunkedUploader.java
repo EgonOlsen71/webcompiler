@@ -18,6 +18,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * Uploadservlet to be used by MOSCloud to upload a file in parts via GET
+ * parameters.
+ * 
  * 
  * @author EgonOlsen
  */
@@ -45,7 +48,7 @@ public class ChunkedUploader extends HttpServlet {
 			String data = request.getParameter("data");
 			if (data != null && data.length() > 0) {
 				Logger.log("Uploading chunk: " + fileName);
-				if (fileName==null || fileName.isBlank()) {
+				if (fileName == null || fileName.isBlank()) {
 					response.getOutputStream().print("Error: No file name!? ");
 					return;
 				}
@@ -54,8 +57,8 @@ public class ChunkedUploader extends HttpServlet {
 				fileName = fileName.replace(" ", "-");
 				Path target = Paths.get(path + fileName);
 				Logger.log("Appending data to: " + target);
-				
-				if (target.toFile().length()>63335) {
+
+				if (target.toFile().length() > 63335) {
 					Logger.log("File too large, aborting...");
 					target.toFile().delete();
 					response.getOutputStream().print("Error: File too large");
@@ -77,7 +80,7 @@ public class ChunkedUploader extends HttpServlet {
 			}
 		} catch (Exception e) {
 			Logger.log("Chunked upload failed!", e);
-			response.getOutputStream().print("Error: "+e.getMessage());
+			response.getOutputStream().print("Error: " + e.getMessage());
 		}
 	}
 
