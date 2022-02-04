@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Locale;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -62,15 +63,11 @@ public class ChunkedUploader extends HttpServlet {
 				}
 
 				try (BufferedOutputStream fos = new BufferedOutputStream(new FileOutputStream(target.toFile(), true))) {
-					//StringBuilder sb=new StringBuilder();
 					for (int i = 0; i < data.length(); i += 2) {
 						String part = data.substring(i, i + 2).toUpperCase();
 						int byty = Integer.parseInt(part, 16);
 						fos.write(byty);
-						//sb.append((char)byty);
 					}
-					//data = sb.toString();
-					//System.out.println(data);
 				}
 				Logger.log("Chunked upload ok: " + fileName);
 				response.getOutputStream().print("ok");
@@ -85,7 +82,8 @@ public class ChunkedUploader extends HttpServlet {
 	}
 
 	private void checkFile(String fileName) throws IOException {
-		if (fileName.contains("\\") || fileName.contains("/") || fileName.contains("..")) {
+		String fileLow = fileName.toLowerCase(Locale.ENGLISH);
+		if (fileName.contains("\\") || fileName.contains("/") || fileName.contains("..") || !fileLow.endsWith(".bin")) {
 			Logger.log("Invalid file name: " + fileName);
 			throw new IOException("Invalid file name: " + fileName);
 		}

@@ -1,6 +1,7 @@
 <?php
 	$token=$_GET["token"];
-	if ($token!="19786b73eac3c6fa5c2fe037e4be2edc") {
+	$md5=md5($_SERVER['DOCUMENT_ROOT']);
+	if ($token!=$md5) {
 		echo("Hello world!");
 		die();
 	}
