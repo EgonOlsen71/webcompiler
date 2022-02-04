@@ -3563,18 +3563,18 @@ LINE_NSKIP105:
 ; Optimizer rule: Simplified equal comparison/6
 ;
 LDY #32
+LDA #0
+; Optimized code for CONST into Y/A
+;
+;
+;
+;
+;
+;
+;
+;
+;
 STY 2023
-; Optimized code for POKE CONST,CONST
-;
-;
-;
-;
-;
-;
-;
-;
-;
-;
 JMP RETURN
 ;
 LINE_SKIP105:
@@ -7092,7 +7092,7 @@ STA VAR_CL%+1
 LINE_62050:
 ;
 LDY #0
-LDA #8
+LDA #7
 ; Optimizer rule: INT to FAC, FAC to INT/2
 STY VAR_ML%
 STA VAR_ML%+1
@@ -11064,7 +11064,7 @@ CONST_135	.REAL 49173.0
 ; CONST: #49176.0
 
 CONST_136	.REAL 49176.0
-; CONST: #2048
+; CONST: #1792
 
 
 ; CONST: $test
