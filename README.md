@@ -10,7 +10,7 @@ MOSCloud is a compiler that runs on the Commodore 64 but actually compiles on a 
 
 If you just want to run the compiler, all you need is the moscloud.d64-image in /basic/build/. Just mount that in your 64 or copy it onto a physical disk and load "moscloud" to run it.
 
-If you want to modify the compiler, you'll find the source code in /basic/moscloud.bas. While you can run it in the interpreter, it's not advised to do so, because it would be much too slow. You can compile it using MOSpeed (or another version of MOSCloud, as it can compile itself). To ease that, there a build.cmd script for Windows in the /basic/build-folder. To build it on other platforms, you have to write yourself a similar script or do it all by hand.
+If you want to modify the compiler, you'll find the source code in /basic/moscloud.bas. While you can run it in the interpreter, it's not advised to do so, because it would be much too slow. You can compile it using MOSpeed (or another version of MOSCloud, as it can compile itself). To ease that, there's a build.cmd script for Windows in the /basic/build-folder. To build it on other platforms, you have to write yourself a similar script or do it all by hand.
 
 # I want to host my own server
 
@@ -34,27 +34,27 @@ The server will create a directory "/uploaddata" on your machine on first usage.
 
 # Customize the server
 
-By default, the server is looking for a configuration file called "wiconf.ini" in "/webdata/". If none can be found, it will use a hard coded default configuration, but that's most likely not, what you want. You can find a template for this configuration file in /config/.
+By default, the server is looking for a configuration file called "wiconf.ini" in "/webdata/". If none can be found, it will use a hard coded default configuration, but that's most likely not what you want. You can find a template for this configuration file in /config/.
 
 If you need the server to use another file, you have to modify the ContextListener. The path is hard coded into a constant.
 
-If your server is behind a dynamic IP, you have to set the correct token in the configuration to update the IP. See the "PHP" section below for more information.
+If your server is behind a dynamic IP, you have to set the correct token in the configuration to update this IP. See the "PHP" section below for more information.
 
 # Run the server
 
 As mentioned, you need a Tomcat server to run it. Just deploy the the built WAR-file (renamed to WebCompiler.war) into the server's webapps-directory and you should be fine. Make sure that it can create its "/uploaddata" directory or create it yourself. Also, create "/webdata" and copy a modified version of the wiconf.ini file into it.
  
-You should then be able to call the web-application at http(s)://<server name or ip>:port/WebCompiler
+You should then be able to call the web-application at http(s)://(server name or ip):(port)/WebCompiler
 
 # Logging
 
-The server logs messages by using it's own Logger class. This class is veeeery basic, all it does is printing to the console. In case of a standard Tomcat installation, this means that the output will go into the catalina.out file of your Tomcat installation. Make sure somehow, that this file doesn't grow too large or if you want better logging, modify the Logger class to your liking.
+The server logs messages by using its own Logger class. This class is veeeery basic, all it does is printing to the console. In case of a standard Tomcat installation, this means that the output will go into the catalina.out file of your Tomcat installation. Make sure somehow, that this file doesn't grow too large or if you want better logging, modify the Logger class to your liking.
 
 # Why do I need PHP for all this?
 
-You might not, but I did. The project contains a /php-directory which contains three simple scripts. The purpose of these is to work around a problem that you might have when trying to find a cheap server hosting provider that supports Java/Tomcat (Hint: There are none!). My "solution" for this is to host the server myself in my house. But to keep costs down, I'm doing so on a Raspberry Pi behind a normal DSL connection. This connection has no fixed IP and there's no domain for this server. So you have to know the dynamic IP to call it. For that, I've created these scripts. You can deploy them on any server that supports PHP and configure the actual server to use them to keep track of the current IP. The server will call the configured script every 15 minutes to update it's IP. For this to work, the token configured in your wiconf.ini has to match the token that the ipstore.php script expects. See "Security concers" for more details.
+You might not, but I did. The project contains a /php-directory which contains three simple scripts. The purpose of these is to work around a problem that you might have with trying to find a cheap server hosting provider that supports Java/Tomcat (Hint: There are none!). My "solution" for this is to host the server myself. But to keep costs down, I'm doing so on a Raspberry Pi behind a normal DSL connection. This connection has no fixed IP and there's no domain for this server either (obviously...). So you have to know the dynamic IP to call it. For that, I've created these scripts. You can deploy them on any server that supports PHP and configure the actual server to use them to keep track of the current IP. The server will call the configured script (refresh.url in wiconf.ini) every 15 minutes to update it's IP. For this to work, the token configured in your wiconf.ini has to match the token that the ipstore.php script expects. See "Security concers" for more details.
 
-If you want to access the web compiler in this setup, you don't do so directly but by using https://<your php server>/<path to scripts> instead. The index.php will redirect you to the actual server.
+If you want to access the web compiler in this setup, you don't do so directly but by using https://(your php server)/(path to scripts>) instead. The index.php will redirect you to the actual server.
 
 The PHP script are hard coded to expect the actual serve to run on port 8192. If that's not the case with your server, change this in the scripts.
 
