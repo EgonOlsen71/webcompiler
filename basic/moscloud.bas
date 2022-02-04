@@ -196,7 +196,7 @@
 48510 close 2:return
 
 49000 rem write into target file
-49010 poke 2023,4:print #2,da$;:return
+49010 poke 2023,4:print#2,da$;:return
 
 50000 rem read character/byte from file
 50010 so=st:if so=64 then do%=1:return
