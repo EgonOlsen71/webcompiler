@@ -32,6 +32,8 @@ The build will finish with a file WebCompiler-0.1-SNAPSHOT.war in "target". The 
 
 The server will create a directory "/uploaddata" on your machine on first usage. If that fails due to insufficient permissions, it might be a good idea to create it yourself.
 
+The index.html contains informational text about the server on which my installation is running on. You might want to change and/or remove this.
+
 # Customize the server
 
 By default, the server is looking for a configuration file called "wiconf.ini" in "/webdata/". If none can be found, it will use a hard coded default configuration, but that's most likely not what you want. You can find a template for this configuration file in /config/.
