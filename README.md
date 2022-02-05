@@ -26,9 +26,9 @@ To run the server, you need:
 To build the server, you need:
 
 * Maven installed
-* The basicv2 artifact being present in your local Maven repository. You can put it there my getting <a href="https://github.com/EgonOlsen71/basicv2">MOSpeed</a> and run "mvn clean package install" on it.
+* The basicv2 artifact being present in your local Maven repository. You can put it there by getting <a href="https://github.com/EgonOlsen71/basicv2">MOSpeed</a> and run "mvn clean package install" on it.
 
-The build will finish with a file WebCompiler-0.1-SNAPSHOT.war in "target". The web application is supposed to be run using the "WebCompiler" context path, so you have to rename the file before deploying it. For more information about the port to be used for the Tomcat server, see below.
+To build the server, run the build.cmd (or something equivalent for your OS) in the project's root directory. The build will finish with a file WebCompiler-0.1-SNAPSHOT.war in "target". The web application is supposed to be run using the "WebCompiler" context path, so you have to rename the file before deploying it. For more information about the port to be used for the Tomcat server, see below.
 
 The server will create a directory "/uploaddata" on your machine on first usage. If that fails due to insufficient permissions, it might be a good idea to create it yourself.
 
@@ -68,7 +68,7 @@ If you just want to run the server on your local machine and don't want to make 
 
 # MOSCloud and my own server
 
-If you want to use MOSCloud with your own server, you have to modify it slightly. For local operation, just remove the REM in the line that sets gu$ to a fixed URL (lines 62000++) and set gu$ to your server's URL. Then recompile MOSCloud.
+If you want to use MOSCloud with your own server, you have to modify it slightly. For local operation, just remove the REM in the line that sets gu$ to a fixed URL (lines 62000++) and set gu$ to your server's URL. Then recompile MOSCloud. There's a build.cmd in /basic/build to compile MOSCloud and create a new d64-image.
 
 If you want it to access a server in the internet, you can do the same, if that server is publicly available. If it's (like mine) located on a dynamic IP, you have to modify line 45700++ to change the URL to the one that your PHP script uses (see above).
 
