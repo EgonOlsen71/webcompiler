@@ -48,6 +48,10 @@ As mentioned, you need a Tomcat server to run it. Just deploy the the built WAR-
  
 You should then be able to call the web-application at http(s)://(server name or ip):(port)/WebCompiler
 
+# A note to users of Debian based OSs
+
+Debian (an in turn Raspberry Pi OS) sandboxes Tomcats for "security reasons" (<- mumble that in a deep voice!). In its current configuration, this server has to be able to write into /uploaddata in the root directory. By default, Debian doesn't allow Tomcat to write into this directory regardless of the permissions set. You'll find documentation on how to fix this in your Tomcat installation here: /usr/share/doc/tomcat9/README.Debian
+
 # Logging
 
 The server logs messages by using its own Logger class. This class is veeeery basic, all it does is printing to the console. In case of a standard Tomcat installation, this means that the output will go into the catalina.out file of your Tomcat installation. Make sure somehow, that this file doesn't grow too large or if you want better logging, modify the Logger class to your liking.
