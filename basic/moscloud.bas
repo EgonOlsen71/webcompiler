@@ -335,8 +335,4 @@
 62060 gu$=""
 62065 rem gu$="http://192.168.178.20:8080/WebCompiler/"
 62070 of$="test"
-62080 dim hx$(15)
-62090 for i=0 to 15:read hx$(i):next
 62100 gosub 55000:return
-62500 data "0","1","2","3","4","5","6","7","8","9"
-62510 data "a","b","c","d","e","f"
