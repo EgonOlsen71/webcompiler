@@ -74,16 +74,18 @@ public class WiCompiler extends HttpServlet {
 			String path = sc.getInitParameter("uploadpath");
 			String file = request.getParameter("file");
 			String poll = request.getParameter("poll");
+			
+			String file2 = file.replace(" ", "-");
 
 			if (poll != null && !poll.isBlank()) {
-				poll(os, path, file);
+				poll(os, path, file2);
 				return;
 			} else {
 				new Thread() {
 					@Override
 					public void run() {
 						Logger.log("Starting delayed compilation...");
-						delayedCompilation(params, sc, path, file);
+						delayedCompilation(params, sc, path, file2);
 					}
 				}.start();
 			}
