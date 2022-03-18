@@ -177,11 +177,11 @@ public class WiCompiler extends HttpServlet {
 		params.setVarStart(getMemoryAddress("varstart", request));
 		params.setVarEnd(getMemoryAddress("varend", request));
 		params.setRuntimeStart(getMemoryAddress("runtimestart", request));
-		params.setBigRam(getBoolean("bigram", request));
 		params.setRetainLoops(getBoolean("loops", request));
 		params.setSourceProcessing(request.getParameter("source"));
 
 		// Potentially transmitted
+		params.setBigRam(getBoolean("bigram", request));
 		params.setProgStart(getMemoryAddress("sa", request));
 		params.setCompactLevel(getNumber(request.getParameter("cl")));
 

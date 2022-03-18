@@ -63,6 +63,7 @@
 40505 print "Starting remote compiler...";
 40510 tl=0:dc%=0:ur$=gu$+"WiCompile"
 40520 ur$=ur$+"?file="+tf$
+40521 if xm%>0 then ur$=ur$+"&bigram=1"
 40522 if sa>0 then n=sa:gosub 40900:ur$=ur$+"&sa="+ns$
 40523 if hs<=0 then 40526
 40524 n=hs:gosub 40900:hs$=ns$:n=he:gosub 40900
@@ -75,6 +76,7 @@
 40580 ur$=ur$+"?poll=1&file="+tf$
 40590 gosub 46500:gosub 41500
 40600 gosub 42000:if mg$="no" then gosub 40800:print".";:goto 40590
+40610 if left$(mg$,4)="OOM:" then mg$="Binary too large!":goto 43000
 40650 tf$=mg$:print "ok"
 40660 return
 
@@ -272,8 +274,10 @@
 57510 print chr$(147);"MOSCloud - Options":print
 57520 print "F1 - Start address:";:if sa<=0 then print " Default":goto 57530
 57525 print sa
-57530 print "F3 - Memory hole at:";:if hs<=0 then print " None":goto 57540
+57530 print "F3 - Memory hole at:";:if hs<=0 then print " None":goto 57536
 57535 print hs;" -";he
+57536 print "F4 - Use extended memory:";:if xm%=0 then print " No":goto 57540
+57537 print " Yes"
 57540 print "F5 - Compact level:";:if cl%<=0 then print " Default":goto 57580
 57545 print cl%
 57580 print "F8 - Refresh remote server:":print"     ";right$(gu$,len(gu$)-7)
@@ -283,6 +287,7 @@
 57720 if a%=133 then gosub 60100:goto 57510
 57730 if a%=134 then gosub 60200:goto 57510
 57740 if a%=135 then gosub 60300:goto 57510
+57750 if a%=138 then xm%=(xm%+1) and 1:goto 57510
 57790 if a%=136 then return
 57800 goto 57700
 
@@ -330,7 +335,7 @@
 62010 ll$=chr$(0):i=rnd(0)
 62020 tt%=64:bu=49976:ui=49152
 62030 ur=49155:us=49152+18:ug=49152+21
-62040 uc=49152+24:sa=-1:hs=-1:he=-1:cl%=-1
+62040 uc=49152+24:sa=-1:hs=-1:he=-1:cl%=-1:xm%=0
 62050 ml%=1792:dim dt$(40)
 62060 gu$=""
 62065 rem gu$="http://192.168.178.20:8080/WebCompiler/"
