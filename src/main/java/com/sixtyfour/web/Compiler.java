@@ -453,11 +453,6 @@ public class Compiler extends HttpServlet {
 			List<SourcePart> parts = srcProc.split();
 			nCode = srcProc.relocate(cfg, parts, params.getMemoryHoles());
 		}
-		
-		if (cfg.isBigRam()) {
-			SourceProcessor srcProc = new SourceProcessor(nCode);
-			nCode = srcProc.moveRuntime();
-		}
 		return nCode;
 	}
 
