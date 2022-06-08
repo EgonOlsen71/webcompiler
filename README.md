@@ -68,7 +68,7 @@ If you just want to run the server on your local machine and don't want to make 
 
 # MOSCloud and my own server
 
-If you want to use MOSCloud with your own server, you have to modify it slightly. For local operation, just remove the REM in the line that sets gu\$ to a fixed URL (lines 62000++) and set gu\$ to your server's URL. Then recompile MOSCloud. There's a build.cmd in /basic/build to compile MOSCloud and create a new d64-image.
+If you want to use MOSCloud with your own server, you have to modify it slightly. For local operation, just remove the REM in the line that sets gu \$ to a fixed URL (lines 62000++) and set gu \$ to your server's URL. Then recompile MOSCloud. There's a build.cmd in /basic/build to compile MOSCloud and create a new d64-image.
 
 If you want it to access a server in the internet, you can do the same, if that server is publicly available. If it's (like mine) located on a dynamic IP, you have to modify line 45700++ to change the URL to the one that your PHP script uses (see above).
 
