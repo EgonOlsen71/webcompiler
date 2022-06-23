@@ -182,6 +182,7 @@ public class WiCompiler extends HttpServlet {
 
 		// Potentially transmitted
 		params.setBigRam(getBoolean("bigram", request));
+		params.setInlineAsm(getBoolean("inlineasm", request));
 		params.setProgStart(getMemoryAddress("sa", request));
 		params.setCompactLevel(getNumber(request.getParameter("cl")));
 
@@ -273,6 +274,7 @@ public class WiCompiler extends HttpServlet {
 
 		cfg.setLoopMode(params.isRetainLoops() ? LoopMode.EXECUTE : LoopMode.REMOVE);
 		cfg.setBigRam(params.isBigRam());
+		cfg.setInlineAssembly(params.isInlineAsm());
 		cfg.setCompactThreshold(params.getCompactLevel());
 
 		memConfig.setProgramStart(params.getProgStart());

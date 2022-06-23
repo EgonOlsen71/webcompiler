@@ -31,11 +31,13 @@ public class Parameters {
 
 	private boolean bigRam;
 
+	private boolean inlineAsm;
+
 	private boolean multiPart;
 
 	private boolean retainLoops;
-	
-	private boolean memoryHolesValid=true;
+
+	private boolean memoryHolesValid = true;
 
 	private List<MemoryHole> memoryHoles = new ArrayList<>();
 
@@ -44,7 +46,7 @@ public class Parameters {
 			memoryHoles.add(hole);
 		}
 	}
-	
+
 	public List<MemoryHole> getMemoryHoles() {
 		return memoryHoles;
 	}
@@ -119,7 +121,8 @@ public class Parameters {
 
 	public String toString() {
 		return platform + "/" + memConfig + "/" + progStart + "/" + varStart + "/" + varEnd + "/" + runtimeStart + "/"
-				+ bigRam + "/" + multiPart + "/" + retainLoops + "/" + sourceProcessing + "/" + compactLevel;
+				+ bigRam + "/" + multiPart + "/" + retainLoops + "/" + sourceProcessing + "/" + compactLevel + "/"
+				+ inlineAsm;
 	}
 
 	public boolean isRetainLoops() {
@@ -152,6 +155,14 @@ public class Parameters {
 
 	public void setMemoryHolesValid(boolean memoryHolesValid) {
 		this.memoryHolesValid = memoryHolesValid;
+	}
+
+	public boolean isInlineAsm() {
+		return inlineAsm;
+	}
+
+	public void setInlineAsm(boolean inlineAsm) {
+		this.inlineAsm = inlineAsm;
 	}
 
 }

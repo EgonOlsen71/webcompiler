@@ -62,7 +62,8 @@
 40502 if tc<2 then print:print "Error: File not found!":goto 60000
 40505 print "Starting remote compiler...";
 40510 tl=0:dc%=0:ur$=gu$+"WiCompile"
-40520 ur$=ur$+"?file="+tf$
+40515 ur$=ur$+"?file="+tf$
+40520 if ia%>0 then ur$=ur$+"&inlineasm=1"
 40521 if xm%>0 then ur$=ur$+"&bigram=1"
 40522 if sa>0 then n=sa:gosub 40900:ur$=ur$+"&sa="+ns$
 40523 if hs<=0 then 40526
@@ -278,8 +279,10 @@
 57535 print hs;" -";he
 57536 print "F4 - Use extended memory:";:if xm%=0 then print " No":goto 57540
 57537 print " Yes"
-57540 print "F5 - Compact level:";:if cl%<=0 then print " Default":goto 57580
+57540 print "F5 - Compact level:";:if cl%<=0 then print " Default":goto 57550
 57545 print cl%
+57550 print "F6 - Enable inline assembly:";:if ia%=0 then print " No":goto 57580
+57555 print " Yes"
 57580 print "F8 - Refresh remote server:":print"     ";right$(gu$,len(gu$)-7)
 57590 print:print "F7 - Exit options menu"
 57700 get a$:if a$="" then 57700
@@ -288,6 +291,7 @@
 57730 if a%=134 then gosub 60200:goto 57510
 57740 if a%=135 then gosub 60300:goto 57510
 57750 if a%=138 then xm%=(xm%+1) and 1:goto 57510
+57760 if a%=139 then ia%=(ia%+1) and 1:goto 57510
 57790 if a%=136 then return
 57800 goto 57700
 
