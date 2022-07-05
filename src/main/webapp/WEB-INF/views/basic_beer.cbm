@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!LABELS>
+<html>
+<head>
+<title>99 bottles of beer</title>
+</head>
+<body>
+<?cbm
+	for b=mx% to 1 step -1:if b<mx%thenprint"<br/><br/>"
+	gosub add_bottle
+	t$=t$+" of beer on the wall, "+t$+" of beer.<br/>"
+	print t$;
+	print "take one down and pass it around, "
+	if b-1<=0 then print "no more bottles of beer on the wall.":goto done
+	gosub out_bottle:print " of beer on the wall."
+	print:next
+	
+	done: print "<br/><br/>no more bottles of beer on the wall, no more bottles of beer.";
+	print "<br/>go to the store and buy some more, ";mx%;" bottles of beer on the wall."
+	goto ok
+	
+	add_bottle:
+	t$=str$(b)+" bottle":if b>1 then t$=t$+"s"
+	return
+	
+	out_bottle:
+	a=b-1:print str$(a)+" bottle";
+	if a>1 then print "s";
+	return
+	ok:
+?>
+</body>
+</html>
