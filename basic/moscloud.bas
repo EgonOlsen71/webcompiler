@@ -55,8 +55,15 @@
 40130 rn=int(rnd(1)*9999999)
 40140 t$=str$(rn):t$=right$(t$,len(t$)-1)
 40150 r$=str$(peek(53248+18)):r$=right$(r$,len(r$)-1)
-40160 tf$=t$+"-"+r$+"-"+of$+".bin"
+40155 gosub 40300
+40160 tf$=t$+"-"+r$+"-"+ff$+".bin"
 40180 return
+
+40300 rem replace spaces in file name
+40310 ff$="":for io=1 to len(of$)
+40320 g$=mid$(of$,io,1):if g$=" " then g$="+"
+40330 ff$=ff$+g$
+40340 next:return
 
 40500 rem compile program
 40502 if tc<2 then print:print "Error: File not found!":goto 60000
