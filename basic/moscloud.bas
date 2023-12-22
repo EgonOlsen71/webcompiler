@@ -61,7 +61,7 @@
 
 40300 rem replace spaces in file name
 40310 ff$="":for io=1 to len(of$)
-40320 g$=mid$(of$,io,1):if g$=" " then g$="+"
+40320 g$=mid$(of$,io,1):if g$=" " then g$="-"
 40330 ff$=ff$+g$
 40340 next:return
 
