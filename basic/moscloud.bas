@@ -252,7 +252,7 @@
 56260 goto 60000
 
 56500 rem check for api presence...
-56505 dn%=peek(186)
+56505 dn%=peek(186):if dn%<8 then dn%=8
 56510 lf%=peek(49152)=76 and peek(49153)=30 and peek(49154)=192
 56520 if lf%=0 then print chr$(147);"Loading...":load "universal",dn%,1
 56530 return
