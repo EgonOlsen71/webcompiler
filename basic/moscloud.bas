@@ -297,8 +297,8 @@
 57720 if a%=133 then gosub 60100:goto 57510
 57730 if a%=134 then gosub 60200:goto 57510
 57740 if a%=135 then gosub 60300:goto 57510
-57750 if a%=138 then xm%=(xm%+1) and 1:goto 57510
-57760 if a%=139 then ia%=(ia%+1) and 1:goto 57510
+57750 if a%=138 then xm%=1-xm%:goto 57510
+57760 if a%=139 then ia%=1-ia%:goto 57510
 57790 if a%=136 then return
 57800 goto 57700
 
