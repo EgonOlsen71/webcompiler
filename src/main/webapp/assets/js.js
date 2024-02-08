@@ -2,7 +2,7 @@ var webAppPrefix = "/";
 
 var interval=null;
 var configName="mospeedconfig";
-var proxyPath="server";
+var proxyPath="mospeed-server";
 
 if (typeof String.prototype.startsWith !== 'function') {
 	String.prototype.startsWith = function(suffix) {
@@ -277,7 +277,7 @@ function storeTmpName(tmpName, fileName) {
 							+ "  (<a href=\"javascript:void(0)\" onclick=\"deleteFile(event.target, '"
 							+ tmpName + "')\">Remove</a>)</li>");
 	jQuery("#hiddennames").append(
-			"<input name=\"filelist\" type=\"hidden\" value=\""
+			"<input name=\"filelist[]\" type=\"hidden\" value=\""
 					+ tmpName + "\"/>");
 	jQuery("#uploaded").show(200);
 }

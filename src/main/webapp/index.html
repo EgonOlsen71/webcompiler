@@ -20,7 +20,7 @@
 			Source code and compiled files will only be stored during the compilation and will be deleted once your download starts.<br/><br/>
 			<b>Please note:</b> This server runs on a Raspberry Pi 4. So please don't expect great performance out of it.<br/>
 			MOSpeed will most likely run much faster on your local PC.<br/><br/>
-			<b>Please don't bookmark this page, as the IP can change every now and then.<br/>Use <a href="https://jpct.de/mospeed" target="_blank">https://jpct.de/mospeed</a> instead.</b>
+			<!-- <b>Please don't bookmark this page, as the IP can change every now and then.<br/>Use <a href="https://jpct.de/mospeed" target="_blank">https://jpct.de/mospeed</a> instead.</b> -->
 			
 		</div>
 		<hr/>
@@ -128,8 +128,8 @@
 			</span>
 			<br class="breaky"/><br/>
 			<span id="memholes" class="selection_group">
-				<label for="memholestart">Memory holes / locked regions:</label>
-				<span class="template"><input class="input-field veryshort" placeholder="start address (decimal or hex)" type="text" name="memholestart"/> - <input class="input-field veryshort" placeholder="end address (decimal or hex)" type="text" name="memholeend"/><br/></span>
+				<label for="memholestart[]">Memory holes / locked regions:</label>
+				<span class="template"><input class="input-field veryshort" placeholder="start address (decimal or hex)" type="text" name="memholestart[]"/> - <input class="input-field veryshort" placeholder="end address (decimal or hex)" type="text" name="memholeend[]"/><br/></span>
 				<br/>
 				<input id="addhole" class="uploadbutton" type="button" value="Add memory hole" onclick="addMemoryHole()"></input>
 			</span>

@@ -86,6 +86,9 @@ public class Compiler extends HttpServlet {
 		String path = sc.getInitParameter("uploadpath");
 
 		String[] files = request.getParameterValues("filelist");
+		if (files==null || files.length==0) {
+			files = request.getParameterValues("filelist[]");
+		}
 		List<String> res = new ArrayList<>();
 		boolean ok = false;
 
@@ -142,6 +145,11 @@ public class Compiler extends HttpServlet {
 
 		String[] starts = request.getParameterValues("memholestart");
 		String[] ends = request.getParameterValues("memholeend");
+		
+		if (starts==null || starts.length==0) {
+			starts = request.getParameterValues("memholestart[]");
+			ends = request.getParameterValues("memholeend[]");
+		}
 
 		if (starts != null && ends != null) {
 			if (starts.length == ends.length) {
