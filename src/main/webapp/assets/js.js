@@ -246,6 +246,10 @@ function updateConsole() {
 	var text=jQuery("#compiletarget").contents().text();
 	if (text.length==0) {
 		jQuery("#console").text(jQuery("#console").text()+"...");
+		var txt = jQuery("#console").text();
+		if (txt.length-txt.lastIndexOf("\n")>40) {
+			jQuery("#console").text(jQuery("#console").text()+"\n");
+		}
 		jQuery(document).scrollTop(jQuery(document).height());
 		return;
 	}
