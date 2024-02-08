@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -66,12 +67,14 @@ public class Compiler extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		Logger.log("Compiler - POST called!");
 		doGet(request, response);
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		Logger.log("Compiler - GET called (or redirected from POST)!");
 		Parameters params = readParameters(request);
 		Logger.log(params.toString());
 
@@ -113,6 +116,12 @@ public class Compiler extends HttpServlet {
 	}
 
 	private Parameters readParameters(HttpServletRequest request) {
+		Enumeration<String> names = request.getParameterNames();
+		while (names.hasMoreElements()) {
+			String name = names.nextElement();
+			Logger.log("Got parameter '"+name+"' with value '"+request.getParameter(name)+"'!");
+		}
+		
 		Parameters params = new Parameters();
 
 		params.setPlatform(request.getParameter("platform"));
