@@ -244,7 +244,7 @@ function compile() {
 function updateConsole() {
 	console.log("Updating console...");
 	var text=jQuery("#compiletarget").contents().text();
-	if (text.length==0) {
+	if (text.length<=1) {
 		jQuery("#console").text(jQuery("#console").text()+"...");
 		var txt = jQuery("#console").text();
 		if (txt.length-txt.lastIndexOf("\n")>40) {
