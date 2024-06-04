@@ -4,10 +4,10 @@
 		<meta charset="utf-8">
 		<link href="./style/default.css" rel="stylesheet" type="text/css">
 	</head>
-	<body style="background:#ffffff; margin:0px; padding:0px;">
+	<body class="iframeUploadBody">
 		<form method="post" action="Compiler/Upload">
 			<input id="filebutton" style="display:none" onchange="window.parent.uploadSelectedFile(event.target);event.target.value=null;" type="file" value="Select file" name="file">
-			<input class="uploadbutton" type="button" value="Select file" onclick="document.getElementById('filebutton').click();">
+			<input class="btn uploadbutton" type="button" value="Select file" onclick="document.getElementById('filebutton').click();">
 		</form>
 	</body>
 </html>

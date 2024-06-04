@@ -34,6 +34,11 @@ jQuery(document).ready(function() {
 		} else {
 			jQuery("#ram").hide();
 		}
+		if (val=="x16") {
+			jQuery("#x16").show();
+		} else {
+			jQuery("#x16").hide();
+		}
 	});
 
 	restoreConfiguration();
@@ -161,7 +166,7 @@ function resetSelects() {
 }
 
 function addMemoryHole() {
-	var element=jQuery(".template").last();
+	var element=jQuery(".form-group-range").last();
 	var copy=element.clone();
 	jQuery(copy).find("input").val("");
 	element.after(copy);
