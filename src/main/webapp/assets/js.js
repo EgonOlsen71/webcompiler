@@ -16,12 +16,12 @@ jQuery(document).ready(function() {
 	jQuery("#uploadedfiles").empty();
 
 	enableDragAndDrop(jQuery(".uploadform"));
-	
+
 	enableAddressChange("progstart");
 	enableAddressChange("varstart");
 	enableAddressChange("varend");
 	enableAddressChange("runtimestart");
-	
+
 	jQuery("select[name=platform]").change(function() {
 		var val=jQuery(this).val();
 		if (val=="vic20") {
@@ -35,18 +35,18 @@ jQuery(document).ready(function() {
 			jQuery("#ram").hide();
 		}
 	});
-	
+
 	restoreConfiguration();
 });
 
 function saveConfiguration() {
 	var conf="";
-	
+
 	jQuery("select option").each(function() {
 		var jthis=jQuery(this);
 		conf+=(jthis.is(":selected")?"selected":"")+"~";
 	});
-		
+
 	jQuery("input").not(":button").each(function() {
 		var jthis=jQuery(this);
 		if (!jthis.is(":hidden")) {
@@ -57,7 +57,7 @@ function saveConfiguration() {
 			}
 		}
 	});
-		
+
 	Cookies.set(configName, conf, { expires: 30 })
 }
 
@@ -67,7 +67,7 @@ function restoreConfiguration() {
 	if (conf) {
 		var parts=conf.split("~");
 		var cnt=0;
-		
+
 		jQuery("select option").each(function() {
 			var jthis=jQuery(this);
 			var val=parts[cnt++];
@@ -78,7 +78,7 @@ function restoreConfiguration() {
 				jthis.removeAttr("selected");
 			}
 		});
-		
+
 		jQuery("input").not(":button").each(function() {
 			jthis=jQuery(this);
 			if (!jthis.is(":hidden")) {
@@ -95,7 +95,7 @@ function restoreConfiguration() {
 				}
 			}
 		});
-		
+
 		for (var i=cnt; i<parts.length-1;) {
 			var part=parts[i];
 			var newy=addMemoryHole();
@@ -126,13 +126,13 @@ function resetConfiguration() {
 	hide("varend");
 	hide("runtimestart");
 	hide("memselect");
-	
+
 	deleteMemHoles();
 	document.getElementById("myform").reset();
 	deleteConfiguration();
 	resetSelects();
 	resetCheckboxes();
-	
+
 	var val=jQuery("select[name=platform]").val();
 	if (val=="vic20") {
 		jQuery("#memselect").show();
@@ -267,7 +267,7 @@ function updateConsole() {
 		}
 		jQuery("#runagain").show();
 	}
-		
+
 	text = text.replace(/---------------------------------------\n/g, "");
 	jQuery("#console").text(text);
 	jQuery(document).scrollTop(jQuery(document).height());
@@ -354,6 +354,3 @@ function deleteFromServer(fileName) {
 		//
 	});
 }
-
-
-
