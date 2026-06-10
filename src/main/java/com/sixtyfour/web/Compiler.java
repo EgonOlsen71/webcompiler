@@ -143,6 +143,8 @@ public class Compiler extends HttpServlet {
 
 		params.setCompactLevel(getNumber(request.getParameter("compactlevel")));
 
+		params.setForcedInts(request.getParameter("forcedints"));
+
 		String[] starts = request.getParameterValues("memholestart");
 		String[] ends = request.getParameterValues("memholeend");
 		
@@ -332,6 +334,18 @@ public class Compiler extends HttpServlet {
 			cfg.setLoopMode(params.isRetainLoops() ? LoopMode.EXECUTE : LoopMode.REMOVE);
 			cfg.setBigRam(params.isBigRam());
 			cfg.setCompactThreshold(params.getCompactLevel());
+
+			if (params.getForcedInts() != null && !params.getForcedInts().trim().isEmpty()) {
+				String[] parts = params.getForcedInts().split("[,;]");
+				Set<String> forced = new HashSet<>();
+				for (String part : parts) {
+					String trimmed = part.trim();
+					if (!trimmed.isEmpty()) {
+						forced.add(trimmed);
+					}
+				}
+				cfg.setForcedToIntegers(forced);
+			}
 
 			memConfig.setProgramStart(params.getProgStart());
 			memConfig.setRuntimeStart(params.getRuntimeStart());

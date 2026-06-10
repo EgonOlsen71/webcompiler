@@ -52,7 +52,7 @@ function saveConfiguration() {
 		conf+=(jthis.is(":selected")?"selected":"")+"~";
 	});
 
-	jQuery("input").not(":button").each(function() {
+	jQuery("input").not(":button").not("#forcedints").each(function() {
 		var jthis=jQuery(this);
 		if (!jthis.is(":hidden")) {
 			if (jthis.is(":radio") || jthis.is(":checkbox")) {
@@ -63,7 +63,8 @@ function saveConfiguration() {
 		}
 	});
 
-	Cookies.set(configName, conf, { expires: 30 })
+	Cookies.set(configName, conf, { expires: 30 });
+	Cookies.set("mospeedconfig_forcedints", jQuery("#forcedints").val(), { expires: 30 });
 }
 
 function restoreConfiguration() {
@@ -84,7 +85,7 @@ function restoreConfiguration() {
 			}
 		});
 
-		jQuery("input").not(":button").each(function() {
+		jQuery("input").not(":button").not("#forcedints").each(function() {
 			jthis=jQuery(this);
 			if (!jthis.is(":hidden")) {
 				if (jthis.is(":radio") || jthis.is(":checkbox") ) {
@@ -109,10 +110,16 @@ function restoreConfiguration() {
 			});
 		}
 	}
+	
+	var forcedints = Cookies.get("mospeedconfig_forcedints");
+	if (forcedints) {
+		jQuery("#forcedints").val(forcedints);
+	}
 }
 
 function deleteConfiguration() {
 	Cookies.remove(configName);
+	Cookies.remove("mospeedconfig_forcedints");
 }
 
 function deleteMemHoles() {
@@ -137,6 +144,7 @@ function resetConfiguration() {
 	deleteConfiguration();
 	resetSelects();
 	resetCheckboxes();
+	jQuery("#forcedints").val("");
 
 	var val=jQuery("select[name=platform]").val();
 	if (val=="vic20") {

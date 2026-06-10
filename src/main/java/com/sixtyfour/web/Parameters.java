@@ -41,6 +41,8 @@ public class Parameters {
 
 	private List<MemoryHole> memoryHoles = new ArrayList<>();
 
+	private String forcedInts;
+
 	public void addMemoryHole(MemoryHole hole) {
 		if (hole.getStartAddress() >= 0 && hole.getEndAddress() >= 0) {
 			memoryHoles.add(hole);
@@ -122,7 +124,7 @@ public class Parameters {
 	public String toString() {
 		return platform + "/" + memConfig + "/" + progStart + "/" + varStart + "/" + varEnd + "/" + runtimeStart + "/"
 				+ bigRam + "/" + multiPart + "/" + retainLoops + "/" + sourceProcessing + "/" + compactLevel + "/"
-				+ inlineAsm;
+				+ inlineAsm + "/" + forcedInts;
 	}
 
 	public boolean isRetainLoops() {
@@ -163,6 +165,14 @@ public class Parameters {
 
 	public void setInlineAsm(boolean inlineAsm) {
 		this.inlineAsm = inlineAsm;
+	}
+
+	public String getForcedInts() {
+		return forcedInts;
+	}
+
+	public void setForcedInts(String forcedInts) {
+		this.forcedInts = forcedInts;
 	}
 
 }

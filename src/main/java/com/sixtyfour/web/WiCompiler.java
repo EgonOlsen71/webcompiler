@@ -179,6 +179,7 @@ public class WiCompiler extends HttpServlet {
 		params.setRuntimeStart(getMemoryAddress("runtimestart", request));
 		params.setRetainLoops(getBoolean("loops", request));
 		params.setSourceProcessing(request.getParameter("source"));
+		params.setForcedInts(request.getParameter("forcedints"));
 
 		// Potentially transmitted
 		params.setBigRam(getBoolean("bigram", request));
@@ -276,6 +277,18 @@ public class WiCompiler extends HttpServlet {
 		cfg.setBigRam(params.isBigRam());
 		cfg.setInlineAssembly(params.isInlineAsm());
 		cfg.setCompactThreshold(params.getCompactLevel());
+
+		if (params.getForcedInts() != null && !params.getForcedInts().trim().isEmpty()) {
+			String[] parts = params.getForcedInts().split("[,;]");
+			java.util.Set<String> forced = new java.util.HashSet<>();
+			for (String part : parts) {
+				String trimmed = part.trim();
+				if (!trimmed.isEmpty()) {
+					forced.add(trimmed);
+				}
+			}
+			cfg.setForcedToIntegers(forced);
+		}
 
 		memConfig.setProgramStart(params.getProgStart());
 		memConfig.setRuntimeStart(params.getRuntimeStart());
