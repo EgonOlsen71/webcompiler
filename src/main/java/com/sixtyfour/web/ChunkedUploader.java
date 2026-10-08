@@ -86,7 +86,7 @@ public class ChunkedUploader extends HttpServlet {
 
 	private void checkFile(String fileName) throws IOException {
 		String fileLow = fileName.toLowerCase(Locale.ENGLISH);
-		if (fileName.contains("\\") || fileName.contains("/") || fileName.contains("..") || !fileLow.endsWith(".bin")) {
+		if (fileName.contains("\\") || fileName.contains("/") || (fileName.contains("..") && !fileName.endsWith("..bin")) || !fileLow.endsWith(".bin")) {
 			Logger.log("Invalid file name: " + fileName);
 			throw new IOException("Invalid file name: " + fileName);
 		}

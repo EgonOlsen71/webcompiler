@@ -97,7 +97,7 @@ public class Uploader extends HttpServlet {
 	}
 
 	private void checkFile(String fileName) throws IOException {
-		if (fileName.contains("\\") || fileName.contains("/") || fileName.contains("..")) {
+		if (fileName.contains("\\") || fileName.contains("/") || (fileName.contains("..") && !fileName.endsWith("..bin"))) {
 			Logger.log("Invalid file name: " + fileName);
 			throw new IOException("Invalid file name: " + fileName);
 		}
